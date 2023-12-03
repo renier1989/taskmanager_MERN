@@ -26,7 +26,11 @@ const registrarUsuario: ExpressReqRes = async (req, res) => {
   }
 };
 
-export { registrarUsuario };
+const autenticar:ExpressReqRes = async(req,res)=>{
+
+}
+
+export { registrarUsuario, autenticar };
 
 
 
