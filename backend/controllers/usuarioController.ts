@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Usuario from "../models/Usuario";
+import generarId from "../helpers/generarId";
 
 interface ExpressReqRes {
   (req: Request, res: Response): void;
@@ -17,6 +18,7 @@ const registrarUsuario: ExpressReqRes = async (req, res) => {
 
   try {
     const usuario = new Usuario(req.body);
+    usuario.token = generarId();
     const usuarioUp = await usuario.save();
     res.json(usuarioUp);
   } catch (error) {
