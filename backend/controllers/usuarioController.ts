@@ -1,16 +1,23 @@
 import { Request, Response } from "express";
+import Usuario from "../models/Usuario";
 
 interface ExpressReqRes {
-    (req: Request,res: Response):void,
+  (req: Request, res: Response): void;
 }
 
-const registrarUsuario:ExpressReqRes = (req,res)=>{
-     res.json({'msg':'hola'})
-}
+const registrarUsuario: ExpressReqRes = async (req, res) => {
+  try {
+    const usuario = new Usuario(req.body);
+    const usuarioUp = await usuario.save();
+    res.json(usuarioUp);
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+};
 
-export {registrarUsuario}
+export { registrarUsuario };
 
-// ejemplos de funciton que seran consumidas por las rutas 
+// ejemplos de funciton que seran consumidas por las rutas
 // const usuario = (req:Request, res:Response) => {
 //     res.json({
 //         status: 'ok',

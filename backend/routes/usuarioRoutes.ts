@@ -9,6 +9,6 @@ const router = express.Router();
 
 
 // AUTENTICACION, REGISTRO Y CONFIRMACION DE USUARIOS
-router.get('/', registrarUsuario)
+router.post('/', registrarUsuario)
 
 export default router
