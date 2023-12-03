@@ -6,6 +6,15 @@ interface ExpressReqRes {
 }
 
 const registrarUsuario: ExpressReqRes = async (req, res) => {
+    // evitar registros con emails duplicados
+    const {email} = req.body;
+    const usuarioExiste = await Usuario.findOne({email});
+
+    if(usuarioExiste){
+        const error = new Error('El usuario ya fue registrado, use otro email!');
+        return res.status(400).json({msg: error.message})
+    }
+
   try {
     const usuario = new Usuario(req.body);
     const usuarioUp = await usuario.save();
@@ -16,6 +25,19 @@ const registrarUsuario: ExpressReqRes = async (req, res) => {
 };
 
 export { registrarUsuario };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ejemplos de funciton que seran consumidas por las rutas
 // const usuario = (req:Request, res:Response) => {
