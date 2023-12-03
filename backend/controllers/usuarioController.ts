@@ -41,6 +41,16 @@ const autenticar:ExpressReqRes = async(req,res)=>{
         return res.status(404).json({msg: error.message});
     }
     // 3. COMPROBAR SU PASSWORD
+    if(await usuario.compararPassword(password)){
+        return res.status(200).json({
+            _id : usuario._id,
+            nombre: usuario.nombre,
+            email: usuario.email
+        });
+    }else{
+        const error = new Error(`El password es incorrecto.!!!`);
+        return res.status(404).json({msg: error.message});
+    }
 }
 
 export { registrarUsuario, autenticar };
