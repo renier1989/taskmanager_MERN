@@ -28,6 +28,19 @@ const registrarUsuario: ExpressReqRes = async (req, res) => {
 
 const autenticar:ExpressReqRes = async(req,res)=>{
 
+    const {email,password} = req.body;
+    // 1. COMPORBAR SI EL USUARIO EXISTE 
+    const usuario = await Usuario.findOne({email});
+    if(!usuario){
+        const error = new Error(`El usuario no Existe!!!`);
+        return res.status(404).json({msg: error.message});
+    }  
+    // 2. COMPROBAR SI EL USUARIO ESTA CONFIRMADO
+    if(!usuario.confirmado){
+        const error = new Error(`Tu cuenta no ha sido confirmada.!!!`);
+        return res.status(404).json({msg: error.message});
+    }
+    // 3. COMPROBAR SU PASSWORD
 }
 
 export { registrarUsuario, autenticar };
