@@ -1,17 +1,18 @@
-// const express = require('express');
+// esto tiene que estar definido antes que todo para que las variables de entorno puedan funcionar
+import dotenv from 'dotenv'
+dotenv.config()
+
+
+
 import express from 'express';
 import conectarDB from './config/db';
-import dotenv from 'dotenv'
 import usuarioRoutes from './routes/usuarioRoutes';
 
 
 const app = express();
 app.use(express.json())
-dotenv.config()
 conectarDB()
 const PORT = process.env.PORT || 4000;
-
-
 
 app.use('/api/usuarios', usuarioRoutes);
 

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Usuario from "../models/Usuario";
 import generarId from "../helpers/generarId";
+import generarJWT from "../helpers/generarJWT";
 
 interface ExpressReqRes {
   (req: Request, res: Response): void;
@@ -45,7 +46,8 @@ const autenticar:ExpressReqRes = async(req,res)=>{
         return res.status(200).json({
             _id : usuario._id,
             nombre: usuario.nombre,
-            email: usuario.email
+            email: usuario.email,
+            token : generarJWT(usuario.id)
         });
     }else{
         const error = new Error(`El password es incorrecto.!!!`);
