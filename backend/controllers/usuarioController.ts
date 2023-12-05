@@ -4,7 +4,7 @@ import generarId from "../helpers/generarId";
 import generarJWT from "../helpers/generarJWT";
 
 interface ExpressReqRes {
-  (req: Request, res: Response): void;
+  (req: Request | any, res: Response): void;
 }
 
 // funcion para registrar usuarios
@@ -132,7 +132,8 @@ const nuevoPassword:ExpressReqRes = async (req, res)=>{
 }
 
 const perfil:ExpressReqRes = async (req,res)=>{
-  console.log('desde el perfil de usuario');
+const {usuario} = req
+  res.json(req.usuario)
   
 }
 
