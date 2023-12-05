@@ -110,6 +110,7 @@ const comprobarToken:ExpressReqRes = async (req,res)=>{
   }
 }
 
+// funcion para actualizar el password del usuario
 const nuevoPassword:ExpressReqRes = async (req, res)=>{
   const {token} = req.params;
   const {password} = req.body;
@@ -127,18 +128,19 @@ const nuevoPassword:ExpressReqRes = async (req, res)=>{
     res.status(200).json({ msg:`Password modificado correctamente.!!!`})
   } catch (error) {
     console.log(error);
-    
   }
+}
 
-
-
+const perfil:ExpressReqRes = async (req,res)=>{
+  console.log('desde el perfil de usuario');
+  
 }
 
 
 
 
 
-export { registrarUsuario, autenticar, confirmar,recuperarPassword,comprobarToken , nuevoPassword};
+export { registrarUsuario, autenticar, confirmar,recuperarPassword,comprobarToken , nuevoPassword,perfil};
 
 // ejemplos de funciton que seran consumidas por las rutas
 // const usuario = (req:Request, res:Response) => {
