@@ -1,5 +1,5 @@
 import express from 'express';
-import { registrarUsuario, autenticar, confirmar } from '../controllers/usuarioController';
+import { registrarUsuario, autenticar, confirmar, recuperarPassword } from '../controllers/usuarioController';
 // import { crearUsuario, usuario } from '../controllers/usuarioController';
 const router = express.Router();
 
@@ -12,5 +12,6 @@ const router = express.Router();
 router.post('/', registrarUsuario)
 router.post('/login', autenticar)
 router.get('/confirmar/:token', confirmar)
+router.post('/recuperar-password', recuperarPassword)
 
 export default router

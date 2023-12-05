@@ -71,14 +71,36 @@ const confirmar: ExpressReqRes = async (req, res) => {
     await usuarioConfirmar.save(); // se le puno un await porque esto consulta al servidor y espera para su ejecución
     return res.status(200).json({msg: `Cuenta confirmada con exito.!!!`})
   } catch (error) {
+    console.log(error); 
+  }  
+};
+
+const recuperarPassword:ExpressReqRes = async (req, res) => {
+  const {email} = req.body;
+  console.log(email);
+  
+  const usuario = await Usuario.findOne({ email });
+  if (!usuario) {
+    const error = new Error(`El usuario no Existe!!!`);
+    return res.status(404).json({ msg: error.message });
+  }
+
+  try {
+    usuario.token = generarId();
+    await usuario.save();
+
+    return res.status(200).json({msg: `Email de recuperacion enviado.!!!`})
+  } catch (error) {
     console.log(error);
     
   }
+}
 
-  
-};
 
-export { registrarUsuario, autenticar, confirmar };
+
+
+
+export { registrarUsuario, autenticar, confirmar,recuperarPassword };
 
 // ejemplos de funciton que seran consumidas por las rutas
 // const usuario = (req:Request, res:Response) => {
