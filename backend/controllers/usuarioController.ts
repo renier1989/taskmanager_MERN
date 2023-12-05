@@ -75,6 +75,7 @@ const confirmar: ExpressReqRes = async (req, res) => {
   }  
 };
 
+// funcion para solicitar un nuevo token para y enviar email para recuperacion del password
 const recuperarPassword:ExpressReqRes = async (req, res) => {
   const {email} = req.body;
   console.log(email);
@@ -96,11 +97,24 @@ const recuperarPassword:ExpressReqRes = async (req, res) => {
   }
 }
 
+const comprobarToken:ExpressReqRes = async (req,res)=>{
+  const {token} = req.params;
+  const tokenValido = await Usuario.findOne({token});
+
+  if(tokenValido){
+    res.status(200).json({msg: `Token valido , el usuario existe`});
+  }else{
+    const error = new Error(`Token no valido`);
+    return res.status(404).json({ msg: error.message });
+  }
+
+}
 
 
 
 
-export { registrarUsuario, autenticar, confirmar,recuperarPassword };
+
+export { registrarUsuario, autenticar, confirmar,recuperarPassword,comprobarToken };
 
 // ejemplos de funciton que seran consumidas por las rutas
 // const usuario = (req:Request, res:Response) => {
