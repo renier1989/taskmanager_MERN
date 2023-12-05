@@ -7,6 +7,7 @@ interface ExpressReqRes {
   (req: Request, res: Response): void;
 }
 
+// funcion para registrar usuarios
 const registrarUsuario: ExpressReqRes = async (req, res) => {
     // evitar registros con emails duplicados
     const {email} = req.body;
@@ -27,8 +28,8 @@ const registrarUsuario: ExpressReqRes = async (req, res) => {
   }
 };
 
+// funcion para autenticar a los usuarios
 const autenticar:ExpressReqRes = async(req,res)=>{
-
     const {email,password} = req.body;
     // 1. COMPORBAR SI EL USUARIO EXISTE 
     const usuario = await Usuario.findOne({email});
@@ -55,7 +56,17 @@ const autenticar:ExpressReqRes = async(req,res)=>{
     }
 }
 
-export { registrarUsuario, autenticar };
+// funcion para confirmar la cuenta de los usuarios con un token dinamico de sus cuentas
+const confirmar:ExpressReqRes = async(req,res)=>{
+const {token} = req.params
+
+console.log(token);
+
+
+}
+
+
+export { registrarUsuario, autenticar, confirmar };
 
 
 
