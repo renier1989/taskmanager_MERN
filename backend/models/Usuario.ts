@@ -1,7 +1,7 @@
 import mongoose, { Model } from "mongoose";
 import bcrypt from 'bcrypt';
 
-interface IUsuario {
+export interface IUsuario {
     nombre: string;
     password: string;
     email:string;
