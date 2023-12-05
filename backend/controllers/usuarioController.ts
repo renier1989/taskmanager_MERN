@@ -97,6 +97,7 @@ const recuperarPassword:ExpressReqRes = async (req, res) => {
   }
 }
 
+// funcion para comprar el token en la vista
 const comprobarToken:ExpressReqRes = async (req,res)=>{
   const {token} = req.params;
   const tokenValido = await Usuario.findOne({token});
@@ -107,6 +108,29 @@ const comprobarToken:ExpressReqRes = async (req,res)=>{
     const error = new Error(`Token no valido`);
     return res.status(404).json({ msg: error.message });
   }
+}
+
+const nuevoPassword:ExpressReqRes = async (req, res)=>{
+  const {token} = req.params;
+  const {password} = req.body;
+
+  const usuario = await Usuario.findOne({token});
+  if (!usuario) {
+    const error = new Error(`Token no valido.!!!`);
+    return res.status(404).json({ msg: error.message });
+  }
+
+  try {
+    usuario.password= password;
+    usuario.token= '';
+    await usuario.save();
+    res.status(200).json({ msg:`Password modificado correctamente.!!!`})
+  } catch (error) {
+    console.log(error);
+    
+  }
+
+
 
 }
 
@@ -114,7 +138,7 @@ const comprobarToken:ExpressReqRes = async (req,res)=>{
 
 
 
-export { registrarUsuario, autenticar, confirmar,recuperarPassword,comprobarToken };
+export { registrarUsuario, autenticar, confirmar,recuperarPassword,comprobarToken , nuevoPassword};
 
 // ejemplos de funciton que seran consumidas por las rutas
 // const usuario = (req:Request, res:Response) => {
