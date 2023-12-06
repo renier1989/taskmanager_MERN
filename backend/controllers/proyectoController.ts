@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Proyecto from "../models/Proyecto";
+import mongoose from "mongoose";
 
 interface ExpressReqRes {
     (req: Request | any, res: Response): void;
@@ -9,15 +10,6 @@ interface ExpressReqRes {
 const obtenerProyectos:ExpressReqRes = async(req,res)=>{
     const proyectos = await Proyecto.find().where('creador').equals(req.usuario);
     res.status(200).json(proyectos);
-
-    // const {usuario} = req;
-    // try {
-    //     const proyectoUsuario = await Proyecto.find({creador: usuario._id})
-    //     res.status(200).json(proyectoUsuario);
-    // } catch (error) {
-    //     console.log(error);   
-    // }
-    
 }
 
 // CREO NUEVOS PROYECRO PARA EL USUARIO AUTENTICADO
@@ -35,7 +27,35 @@ const nuevoProyecto:ExpressReqRes = async (req,res)=>{
     }
 }
 
-const obtenerProyecto:ExpressReqRes = async (req,res)=>{}
+// OBTENER UN PROYECTO POR ID
+const obtenerProyecto:ExpressReqRes = async (req,res)=>{
+    const {id} = req.params;
+    try {
+
+        const valid  =  mongoose.Types.ObjectId.isValid(id);
+
+        if(!valid){
+            const error = new Error(`Error el id no es valido.!!!`);
+            return res.status(404).json({ msg: error.message });
+        }
+
+        const proyecto = await Proyecto.findById(id);
+        if(!proyecto) {
+            const error = new Error(`Proyecto no encontrado.!!!`);
+            return res.status(404).json({ msg: error.message });
+        }
+        
+        if(proyecto.creador?.toString() !== req.usuario._id.toString()){            
+            const error = new Error(`No puedes ingresar a este proyecto.!!!`);
+            return res.status(401).json({ msg: error.message });
+        }
+        res.status(200).json(proyecto)
+
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
 
 const editarProyecto:ExpressReqRes = async (req,res)=>{}
 

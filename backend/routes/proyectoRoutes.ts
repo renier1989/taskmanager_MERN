@@ -21,7 +21,7 @@ router
   .post(checkAuth, nuevoProyecto);
 
 router
-  .route("/id")
+  .route("/:id")
   .get(checkAuth, obtenerProyecto)
   .put(checkAuth, editarProyecto)
   .delete(checkAuth, eliminarProyecto);
