@@ -5,11 +5,23 @@ interface ExpressReqRes {
     (req: Request | any, res: Response): void;
   }
 
-const obtenerProyectos:ExpressReqRes = async(req,res)=>{}
+// OBTENGO LOS PROYECTOS DEL USUARIO AUTENTICADO
+const obtenerProyectos:ExpressReqRes = async(req,res)=>{
+    const proyectos = await Proyecto.find().where('creador').equals(req.usuario);
+    res.status(200).json(proyectos);
 
+    // const {usuario} = req;
+    // try {
+    //     const proyectoUsuario = await Proyecto.find({creador: usuario._id})
+    //     res.status(200).json(proyectoUsuario);
+    // } catch (error) {
+    //     console.log(error);   
+    // }
+    
+}
+
+// CREO NUEVOS PROYECRO PARA EL USUARIO AUTENTICADO
 const nuevoProyecto:ExpressReqRes = async (req,res)=>{
-    console.log(req.body);
-    console.log(req.usuario);
     
     const proyecto = new Proyecto(req.body);
     proyecto.creador = req.usuario._id;
@@ -21,7 +33,6 @@ const nuevoProyecto:ExpressReqRes = async (req,res)=>{
         console.log(error);
         
     }
-    
 }
 
 const obtenerProyecto:ExpressReqRes = async (req,res)=>{}
