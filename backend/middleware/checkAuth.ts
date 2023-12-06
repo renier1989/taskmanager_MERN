@@ -48,7 +48,7 @@ declare global {
     }
 }
 
-const checkAuth = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const checkAuth = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     let token: string | undefined;
 
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
@@ -60,15 +60,15 @@ const checkAuth = async (req: Request, res: Response, next: NextFunction): Promi
 
             try {
                 req.usuario = await Usuario.findById(tokenDecoded.id).select("-password -__v -createdAt -updatedAt -token -confirmado");
-                next();
+                return next();
             } catch (error) {
-                res.status(404).json({ msg: `Hubo un error.`, error });
+                return res.status(404).json({ msg: `Hubo un error.`, error });
             }
         } catch (error) {
-            res.status(401).json({ msg: "Token inválido" });
+            return res.status(401).json({ msg: "Token inválido" });
         }
     } else {
-        res.status(401).json({ msg: "Token no provisto" });
+        return res.status(401).json({ msg: "Token no provisto" });
     }
 };
 

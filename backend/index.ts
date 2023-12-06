@@ -7,6 +7,7 @@ dotenv.config()
 import express from 'express';
 import conectarDB from './config/db';
 import usuarioRoutes from './routes/usuarioRoutes';
+import proyectoRoutes from './routes/proyectoRoutes';
 
 
 const app = express();
@@ -15,6 +16,7 @@ conectarDB()
 const PORT = process.env.PORT || 4000;
 
 app.use('/api/usuarios', usuarioRoutes);
+app.use('/api/proyectos', proyectoRoutes);
 
 // app.get('/', (req,res)=>{
 //     res.json({'hola': 'renier'})

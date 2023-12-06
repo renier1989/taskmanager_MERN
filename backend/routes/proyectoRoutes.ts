@@ -29,3 +29,5 @@ router
 router.get("/tareas/:id", checkAuth, obtenerTareas);
 router.post("/agregar-colaborador/:id", checkAuth, agregarColaborador);
 router.post("/eliminar-colaborador/:id", checkAuth, eliminarColaborador);
+
+export default router;
