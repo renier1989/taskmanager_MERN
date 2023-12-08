@@ -3,7 +3,7 @@ function App() {
 
   return (
     <>
-      <p>aplicacion de react </p>
+      <p className="">aplicacion de react </p>
     </>
   )
 }
