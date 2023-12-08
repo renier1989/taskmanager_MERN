@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Proyecto from "../models/Proyecto";
 import mongoose from "mongoose";
+import { isValidId } from "../helpers/validId";
 
 interface ExpressReqRes {
     (req: Request | any, res: Response): void;
@@ -33,9 +34,7 @@ const obtenerProyecto:ExpressReqRes = async (req,res)=>{
     try {
 
         // esto es para que no salte un error si el id no es valido
-        const valid  =  mongoose.Types.ObjectId.isValid(id);
-
-        if(!valid){
+        if(!isValidId(id)){
             const error = new Error(`El proyecto que estas buscando no Existe.!!!`);
             return res.status(404).json({ msg: error.message });
         }

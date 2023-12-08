@@ -1,4 +1,5 @@
 import mongoose, { Model, Types } from "mongoose";
+import { IProyecto } from "./Proyecto";
 export interface ITarea {
   _id: Types.ObjectId;
   nombre: string;
@@ -6,7 +7,7 @@ export interface ITarea {
   estado: boolean;
   fechaEntrega: Date;
   prioridad: string;
-  proyecto: Types.ObjectId;
+  proyecto: IProyecto;
 }
 
 type TareaModel = Model<ITarea>;

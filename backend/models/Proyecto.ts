@@ -7,13 +7,13 @@ export interface IProyecto{
     descripcion: string,
     fechaEntrega: Date,
     cliente: string,
-    creador: Types.ObjectId,
+    creador: IUsuario,
     colaboradores: IUsuario[],
 }
 
 type ProyectoModel = Model<IProyecto>
 
-const proyectoSchema = new mongoose.Schema<IProyecto>({
+const proyectoSchema = new mongoose.Schema<IProyecto,ProyectoModel>({
     nombre:{
         type: String,
         required: true,
