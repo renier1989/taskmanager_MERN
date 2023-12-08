@@ -1,7 +1,19 @@
-import mongoose from "mongoose";
+import mongoose, { Model, Types } from "mongoose";
+import { IUsuario } from "./Usuario";
 
+export interface IProyecto{
+    _id: Types.ObjectId,
+    nombre: string,
+    descripcion: string,
+    fechaEntrega: Date,
+    cliente: string,
+    creador: Types.ObjectId,
+    colaboradores: IUsuario[],
+}
 
-const proyectoSchema = new mongoose.Schema({
+type ProyectoModel = Model<IProyecto>
+
+const proyectoSchema = new mongoose.Schema<IProyecto>({
     nombre:{
         type: String,
         required: true,
