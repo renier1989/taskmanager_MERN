@@ -32,16 +32,17 @@ const obtenerProyecto:ExpressReqRes = async (req,res)=>{
     const {id} = req.params;
     try {
 
+        // esto es para que no salte un error si el id no es valido
         const valid  =  mongoose.Types.ObjectId.isValid(id);
 
         if(!valid){
-            const error = new Error(`Error el id no es valido.!!!`);
+            const error = new Error(`El proyecto que estas buscando no Existe.!!!`);
             return res.status(404).json({ msg: error.message });
         }
 
         const proyecto = await Proyecto.findById(id);
         if(!proyecto) {
-            const error = new Error(`Proyecto no encontrado.!!!`);
+            const error = new Error(`El proyecto que estas buscando no Existe.!!!`);
             return res.status(404).json({ msg: error.message });
         }
         
@@ -57,7 +58,45 @@ const obtenerProyecto:ExpressReqRes = async (req,res)=>{
     
 }
 
-const editarProyecto:ExpressReqRes = async (req,res)=>{}
+const editarProyecto:ExpressReqRes = async (req,res)=>{
+
+    const {id} = req.params;
+    try {
+
+        // esto es para que no salte un error si el id no es valido
+        const valid  =  mongoose.Types.ObjectId.isValid(id);
+
+        if(!valid){
+            const error = new Error(`El proyecto que estas buscando no Existe.!!!`);
+            return res.status(404).json({ msg: error.message });
+        }
+
+        const proyecto = await Proyecto.findById(id);
+
+        if(!proyecto) {
+            const error = new Error(`El proyecto que estas buscando no Existe.!!!`);
+            return res.status(404).json({ msg: error.message });
+        }
+        
+        if(proyecto.creador?.toString() !== req.usuario._id.toString()){            
+            const error = new Error(`No puedes editar a este proyecto.!!!`);
+            return res.status(401).json({ msg: error.message });
+        }
+
+        // accedo al modelo de proyecto, si viene algo en el req uso eso datos sino uso los que ya estaban en la BD  
+        proyecto.nombre = req.body.nombre || proyecto.nombre;
+        proyecto.descripcion = req.body.descripcion || proyecto.descripcion;
+        proyecto.fechaEntrega = req.body.fechaEntrega || proyecto.fechaEntrega;
+        proyecto.cliente = req.body.cliente || proyecto.cliente;
+
+        const proyectoActualizado = await proyecto.save();
+        res.status(200).json(proyectoActualizado)
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}
 
 const eliminarProyecto:ExpressReqRes = async (req,res)=>{}
 
