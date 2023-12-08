@@ -85,7 +85,31 @@ const actualizarTarea: ExpressReqRes = async (req, res) => {
     console.log(error);
   }
 };
-const eliminarTarea: ExpressReqRes = async (req, res) => {};
+const eliminarTarea: ExpressReqRes = async (req, res) => {
+    const { id } = req.params;
+    try {
+      // esto es para que no salte un error si el id no es valido
+      if (!isValidId(id)) {
+        const error = new Error(`No pudimos encontrar la tarea.!!!`);
+        return res.status(404).json({ msg: error.message });
+      }
+      
+      const tarea = await Tarea.findById(id).populate("proyecto");
+  
+      // verifico si puedo ver las tareas de un proyecto que no he creado
+      if (tarea?.proyecto.creador.toString() !== req.usuario._id.toString()) {
+        const error = new Error(
+          `No puedes eliminar esta Tarea.!!!`
+        );
+        return res.status(401).json({ msg: error.message });
+      }
+  
+      await tarea?.deleteOne()      
+      res.status(200).json({msg:`Tarea eliminada con exito.!!!`});
+    } catch (error) {
+      console.log(error);
+    }
+};
 const cambiarEstadoTarea: ExpressReqRes = async (req, res) => {};
 
 export {
