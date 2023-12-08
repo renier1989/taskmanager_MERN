@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Proyecto from "../models/Proyecto";
 import mongoose from "mongoose";
 import { isValidId } from "../helpers/validId";
+import Tarea from "../models/Tarea";
 
 interface ExpressReqRes {
     (req: Request | any, res: Response): void;
@@ -49,7 +50,10 @@ const obtenerProyecto:ExpressReqRes = async (req,res)=>{
             const error = new Error(`No puedes ingresar a este proyecto.!!!`);
             return res.status(401).json({ msg: error.message });
         }
-        res.status(200).json(proyecto)
+
+        // obtengo las tareas del proyecto que estoy consultando
+        const tareas = await Tarea.find().where('proyecto').equals(proyecto._id);
+        res.status(200).json({proyecto, tareas})
 
     } catch (error) {
         console.log(error);
@@ -141,8 +145,6 @@ const agregarColaborador:ExpressReqRes = async (req,res)=>{}
 
 const eliminarColaborador:ExpressReqRes = async (req,res)=>{}
 
-const obtenerTareas:ExpressReqRes = async (req,res)=>{}
-
 export {
     obtenerProyectos,
     nuevoProyecto,
@@ -151,5 +153,4 @@ export {
     eliminarProyecto,
     agregarColaborador,
     eliminarColaborador,
-    obtenerTareas,
 }
