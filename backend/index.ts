@@ -8,6 +8,8 @@ import express from 'express';
 import conectarDB from './config/db';
 import usuarioRoutes from './routes/usuarioRoutes';
 import proyectoRoutes from './routes/proyectoRoutes';
+import tareaRoutes from './routes/tareaRoutes';
+
 
 
 const app = express();
@@ -17,6 +19,7 @@ const PORT = process.env.PORT || 4000;
 
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/proyectos', proyectoRoutes);
+app.use('/api/tareas', tareaRoutes);
 
 // app.get('/', (req,res)=>{
 //     res.json({'hola': 'renier'})
