@@ -4,7 +4,7 @@ const Registrar = () => {
   return (
     <>
     <h1 className="text-sky-600 text-6xl font-black capitalize">
-      Crea tu cuentas y administra tus <span className="text-slate-700">{" "}proyectos</span>
+      Crea tu cuenta y administra tus <span className="text-slate-700">{" "}proyectos</span>
     </h1>
     <form className="mt-20 bg-white rounded-lg shadow p-10">
       <div className="my-5">
@@ -24,7 +24,7 @@ const Registrar = () => {
         <input id="password2" type="password" placeholder="Repite tu password" className="w-full border p-3 mt-5 rounded-xl bg-gray-50" />
       </div>
 
-      <input type="submit" value="Iniciar Sesion" className="bg-sky-700 w-full py-3 text-white font-bold uppercase rounded hover:cursor-pointer hover:bg-sky-800 transition-colors mb-5" />
+      <input type="submit" value="Crear Cuenta" className="bg-sky-700 w-full py-3 text-white font-bold uppercase rounded hover:cursor-pointer hover:bg-sky-800 transition-colors mb-5" />
     </form>
 
     <nav className="lg:flex lg:justify-between ">
