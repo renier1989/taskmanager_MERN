@@ -29,7 +29,7 @@ const Registrar = () => {
 
     <nav className="lg:flex lg:justify-between ">
       <Link to="/" className="block text-center my-5 uppercase text-slate-500 text-sm">¿Ya tienes una cuenta? Inicia Sesion</Link>
-      <Link to="olvide-password" className="block text-center my-5 uppercase text-slate-500 text-sm">¿Olvidaste tu Password? Registrarte</Link>
+      <Link to="/olvide-password" className="block text-center my-5 uppercase text-slate-500 text-sm">¿Olvidaste tu Password? Registrarte</Link>
     </nav>
   </>
   )
