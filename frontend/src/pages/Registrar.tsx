@@ -14,6 +14,10 @@ const Registrar = () => {
   const [alerta, setAlerta] = useState<AlertaData>({msg:'', error:false});
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setAlerta({
+      msg: '',
+      error: false
+    })
     if ([nombre, email, password, repetirPassword].includes('')) {
       setAlerta({
         msg: 'Todos los campos son obligatorios',
@@ -21,6 +25,13 @@ const Registrar = () => {
       })
       return;
     }
+    
+    setAlerta({
+      msg: 'Tu cuenta se ha registrardo, confirmala para porder inciar sesion.',
+      error: false
+    })
+
+
   }
 
   const { msg } = alerta;
