@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import Alerta from "../components/Alerta";
+import axios from "axios";
 
 interface AlertaData {
   msg:string;
@@ -12,7 +13,7 @@ const Registrar = () => {
   const [password, setPassword] = useState('');
   const [repetirPassword, setRepetirPassword] = useState('');
   const [alerta, setAlerta] = useState<AlertaData>({msg:'', error:false});
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setAlerta({
       msg: '',
@@ -42,10 +43,19 @@ const Registrar = () => {
       return;
     }
 
-    setAlerta({
-      msg: 'Tu cuenta se ha registrardo, confirmala para porder inciar sesion.',
-      error: false
-    })
+
+    setAlerta({msg:'',error:false});
+
+    try {
+        const respuesta = await axios.post('http://localhost:4000/api/usuarios',{nombre,email,password});
+        console.log(respuesta);
+        
+    } catch (error) {
+      console.log(error);
+      
+    }
+
+
   }
 
   const { msg } = alerta;
