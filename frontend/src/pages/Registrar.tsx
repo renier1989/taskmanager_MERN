@@ -47,11 +47,18 @@ const Registrar = () => {
     setAlerta({msg:'',error:false});
 
     try {
-        const respuesta = await axios.post('http://localhost:4000/api/usuarios',{nombre,email,password});
-        console.log(respuesta);
+        const {data} = await axios.post('http://localhost:4000/api/usuarios',{nombre,email,password});
+        
+      setAlerta({
+        msg: data.msg,
+        error: false
+      })
         
     } catch (error) {
-      console.log(error);
+      setAlerta({
+        msg: error.response.data.msg,
+        error: true
+      })
       
     }
 
@@ -68,7 +75,7 @@ const Registrar = () => {
       {
         msg && <Alerta alerta={alerta} />
       }
-      <form onSubmit={e => handleSubmit(e)} className="mt-20 bg-white rounded-lg shadow p-10">
+      <form onSubmit={e => handleSubmit(e)} className="mt-10 bg-white rounded-lg shadow p-10">
         <div className="my-5">
           <label className="block uppercase text-gray-600 text-xl font-bold" htmlFor="nombre">Nombre</label>
           <input value={nombre} onChange={e => setNombre(e.target.value)} id="nombre" autoComplete="off" type="text" placeholder="Tu nombre completo" className="w-full border p-3 mt-5 rounded-xl bg-gray-50" autoFocus />

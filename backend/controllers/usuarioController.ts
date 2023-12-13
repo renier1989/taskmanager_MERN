@@ -21,8 +21,11 @@ const registrarUsuario: ExpressReqRes = async (req, res) => {
   try {
     const usuario = new Usuario(req.body);
     usuario.token = generarId();
-    const usuarioUp = await usuario.save();
-    res.json(usuarioUp);
+    await usuario.save();
+    // const usuarioUp = await usuario.save();
+    // res.json(usuarioUp);
+    res.json({msg: 'Usuario creado con Exito, revisa tu email para confirmar tu cuenta.!'});
+
   } catch (error) {
     console.log(`Error: ${error}`);
   }
