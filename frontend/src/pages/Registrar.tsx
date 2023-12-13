@@ -25,13 +25,27 @@ const Registrar = () => {
       })
       return;
     }
+
+    if(password !== repetirPassword){
+      setAlerta({
+        msg: 'Los passwords no coinciden',
+        error: true
+      })
+      return;
+    }
     
+    if(password.length < 6){
+      setAlerta({
+        msg: 'El password de ser minimo de 6 caracteres',
+        error: true
+      })
+      return;
+    }
+
     setAlerta({
       msg: 'Tu cuenta se ha registrardo, confirmala para porder inciar sesion.',
       error: false
     })
-
-
   }
 
   const { msg } = alerta;
