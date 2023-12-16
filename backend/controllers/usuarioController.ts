@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Usuario from "../models/Usuario";
 import generarId from "../helpers/generarId";
 import generarJWT from "../helpers/generarJWT";
+import { emailRegistroUsuario } from "../helpers/mailing";
 
 interface ExpressReqRes {
   (req: Request | any, res: Response): void;
@@ -22,6 +23,14 @@ const registrarUsuario: ExpressReqRes = async (req, res) => {
     const usuario = new Usuario(req.body);
     usuario.token = generarId();
     await usuario.save();
+
+    // se evniar un email al usuario que se registro
+    emailRegistroUsuario({
+      email: usuario.email,
+      nombre: usuario.nombre,
+      token : usuario.token
+    });
+
     // const usuarioUp = await usuario.save();
     // res.json(usuarioUp);
     res.json({msg: 'Usuario creado con Exito, revisa tu email para confirmar tu cuenta.!'});
