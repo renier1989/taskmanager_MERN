@@ -1,17 +1,19 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import Alerta from "../components/Alerta"
+import { Response } from 'express';
+import axios from "axios";
 
 interface AlertData {
 	msg: string,
-	error: stringk
+	error: boolean
 }
 
 const OlvidePassword = () => {
 
 	const [email, setEmail] = useState('')
-	const [alerta, setAlerta] = useState({msg: '',error:false})
-	const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+	const [alerta, setAlerta] = useState<AlertData>({msg: '', error:false})
+	const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		if(email === '' || email.length < 6){
@@ -20,6 +22,19 @@ const OlvidePassword = () => {
 				error: true
 			})
 			return;
+		}
+
+
+		try {
+			const {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/usuarios/olvide-password`,{email});
+			setAlerta({
+				msg: data.msg,
+				error:false
+			})
+			
+		} catch (error) {
+			setAlerta({msg: error.response.data.msg,
+			error:true})
 		}
 
 	}

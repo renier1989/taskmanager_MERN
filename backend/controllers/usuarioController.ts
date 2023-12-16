@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import Usuario from "../models/Usuario";
 import generarId from "../helpers/generarId";
 import generarJWT from "../helpers/generarJWT";
-import { emailRegistroUsuario } from "../helpers/mailing";
+import { emailOlvidePassword, emailRegistroUsuario } from "../helpers/mailing";
 
 interface ExpressReqRes {
   (req: Request | any, res: Response): void;
@@ -101,6 +101,13 @@ const recuperarPassword:ExpressReqRes = async (req, res) => {
   try {
     usuario.token = generarId();
     await usuario.save();
+
+    // se envia el correo
+    emailOlvidePassword({
+      email: usuario.email,
+      nombre: usuario.nombre,
+      token : usuario.token
+    })
 
     return res.status(200).json({msg: `Email de recuperacion enviado.!!!`})
   } catch (error) {
