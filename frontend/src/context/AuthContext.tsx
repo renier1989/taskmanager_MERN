@@ -1,17 +1,16 @@
-import { ReactNode, createContext } from "react";
+import { ReactNode, createContext, useState } from "react";
 
-interface IAuthContect {
-
+interface IAuthContext {
+    // hola: string;
 }
 
-
-
-const AuthContext = createContext<IAuthContect | undefined >(undefined);
+const AuthContext = createContext<IAuthContext>(null!);
 
 const AuthProvider = ({children}:{children:ReactNode}) =>{
 
-    return <AuthContext.Provider value={{
 
+    return <AuthContext.Provider value={{
+        
     }}>
         {children}
     </AuthContext.Provider>
