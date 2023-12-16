@@ -124,7 +124,7 @@ const comprobarToken:ExpressReqRes = async (req,res)=>{
   if(tokenValido){
     res.status(200).json({msg: `Token valido , el usuario existe`});
   }else{
-    const error = new Error(`Token no valido`);
+    const error = new Error(`Token no valido o ha Expirado.!!!`);
     return res.status(404).json({ msg: error.message });
   }
 }
@@ -136,7 +136,7 @@ const nuevoPassword:ExpressReqRes = async (req, res)=>{
 
   const usuario = await Usuario.findOne({token});
   if (!usuario) {
-    const error = new Error(`Token no valido.!!!`);
+    const error = new Error(`Token no valido o ha Expirado.!!!`);
     return res.status(404).json({ msg: error.message });
   }
 
