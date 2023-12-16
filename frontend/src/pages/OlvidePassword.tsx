@@ -3,16 +3,13 @@ import { Link } from "react-router-dom"
 import Alerta from "../components/Alerta"
 import { Response } from 'express';
 import axios from "axios";
+import { IAlertData } from "../interfaces/IAlertData";
 
-interface AlertData {
-	msg: string,
-	error: boolean
-}
 
 const OlvidePassword = () => {
 
 	const [email, setEmail] = useState('')
-	const [alerta, setAlerta] = useState<AlertData>({msg: '', error:false})
+	const [alerta, setAlerta] = useState<IAlertData>({msg: '', error:false})
 	const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 

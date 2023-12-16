@@ -1,18 +1,15 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom"
 import Alerta from "../components/Alerta";
+import { IAlertData } from "../interfaces/IAlertData";
 
-interface AlertaData {
-  msg: string;
-  error: boolean;
-}
 
 const ConfirmarCuenta = () => {
 
   const params = useParams()
   const { id } = params;
-  const [alerta, setAlerta] = useState<AlertaData>({ msg: '', error: false })
+  const [alerta, setAlerta] = useState<IAlertData>({ msg: '', error: false })
   const [cuentaConfirmada, setCuentaConfirmada] = useState(false);
 
 
