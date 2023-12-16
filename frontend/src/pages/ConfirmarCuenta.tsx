@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom"
 import Alerta from "../components/Alerta";
