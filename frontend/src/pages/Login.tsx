@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import { IAlertData } from "../interfaces/IAlertData";
 import Alerta from "../components/Alerta";
+import AxiosClient from "../config/AxiosClient";
 
 
 const Login = () => {
@@ -16,7 +17,29 @@ const Login = () => {
         msg: 'Todos los campos son requeridos.',
         error: true
       })
+      return
     }
+
+
+    try {
+      const { data } = await AxiosClient.post('/usuarios/login', { email, password });
+
+      setAlerta({
+        msg: '',
+        error: false
+      })
+
+      localStorage.setItem('token',data.token);
+      console.log(data);
+
+    } catch (error) {
+      setAlerta({
+        msg: error.response.data.msg,
+        error: true
+      })
+    }
+
+
   }
   const { msg } = alerta
   return (
