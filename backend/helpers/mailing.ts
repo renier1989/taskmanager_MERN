@@ -9,11 +9,11 @@ interface IDatos {
 export const emailRegistroUsuario = async (datos: IDatos) => {
   const { email, nombre, token } = datos;
   const transport = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
+    host: process.env.MAILTRAP_HOST,
+    port: Number(process.env.MAILTRAP_PORT),
     auth: {
-      user: "6a660c8afe3f99",
-      pass: "5f21ae7d87aa8e",
+      user: process.env.MAILTRAP_USER,
+      pass: process.env.MAILTRAP_PASS,
     },
   });
 
@@ -36,11 +36,11 @@ const info = await transport.sendMail({
 export const emailOlvidePassword = async (datos: IDatos) => {
   const { email, nombre, token } = datos;
   const transport = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
+    host: process.env.MAILTRAP_HOST,
+    port: Number(process.env.MAILTRAP_PORT),
     auth: {
-      user: "6a660c8afe3f99",
-      pass: "5f21ae7d87aa8e",
+      user: process.env.MAILTRAP_USER,
+      pass: process.env.MAILTRAP_PASS,
     },
   });
 

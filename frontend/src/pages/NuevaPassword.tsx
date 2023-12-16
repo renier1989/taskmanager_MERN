@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import { IAlertData } from '../interfaces/IAlertData';
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
 import Alerta from "../components/Alerta";
+import AxiosClient from "../config/AxiosClient";
+
 
 
 const NuevaPassword = () => {
@@ -19,8 +20,8 @@ const NuevaPassword = () => {
   useEffect(() => {
     const validarToken = async () => {
       try {
-        const backend_url = `${import.meta.env.VITE_BACKEND_URL}/api/usuarios/recuperar-password/${token}`;
-        await axios(backend_url);
+        const backend_url = `/usuarios/recuperar-password/${token}`;
+        await AxiosClient(backend_url);
         setTokenValido(true);
       } catch (error) {
         setAlerta({
@@ -54,8 +55,8 @@ const NuevaPassword = () => {
 
     try {
 
-      const backend_url = `${import.meta.env.VITE_BACKEND_URL}/api/usuarios/recuperar-password/${token}`;
-      const { data } = await axios.post(backend_url, { password })
+      const backend_url = `/usuarios/recuperar-password/${token}`;
+      const { data } = await AxiosClient.post(backend_url, { password })
 
       setPasswordActualizado(true);
 
