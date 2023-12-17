@@ -3,12 +3,13 @@ import { Link } from "react-router-dom"
 import { IAlertData } from "../interfaces/IAlertData";
 import Alerta from "../components/Alerta";
 import AxiosClient from "../config/AxiosClient";
+import useAuth from "../hooks/useAuth";
 // import useAuth from "../hooks/useAuth";
 
 
 const Login = () => {
   
-  
+  const {setAuth} = useAuth()
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,7 +28,7 @@ const Login = () => {
 
     try {
       const { data } = await AxiosClient.post('/usuarios/login', { email, password });
-
+      setAuth(data)
       setAlerta({
         msg: '',
         error: false
