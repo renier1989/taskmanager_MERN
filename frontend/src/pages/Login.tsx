@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { IAlertData } from "../interfaces/IAlertData";
 import Alerta from "../components/Alerta";
 import AxiosClient from "../config/AxiosClient";
@@ -10,7 +10,7 @@ import useAuth from "../hooks/useAuth";
 const Login = () => {
   
   const {setAuth} = useAuth()
-  
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [alerta, setAlerta] = useState<IAlertData>({ msg: '', error: false })
@@ -29,13 +29,13 @@ const Login = () => {
     try {
       const { data } = await AxiosClient.post('/usuarios/login', { email, password });
       setAuth(data)
+      navigate('/proyectos')
       setAlerta({
         msg: '',
         error: false
       })
 
       localStorage.setItem('token',data.token);
-      console.log(data);
 
     } catch (error) {
       setAlerta({
