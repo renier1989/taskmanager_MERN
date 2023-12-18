@@ -1,4 +1,4 @@
-import { EffectCallback, ReactNode, createContext, useEffect, useState } from "react";
+import {  ReactNode, createContext, useEffect, useState } from "react";
 import { TAuth, authValues } from "../interfaces/AuthType";
 import AxiosClient from "../config/AxiosClient";
 

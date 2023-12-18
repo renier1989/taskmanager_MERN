@@ -6,6 +6,8 @@ import OlvidePassword from "./pages/OlvidePassword"
 import NuevaPassword from "./pages/NuevaPassword"
 import ConfirmarCuenta from "./pages/ConfirmarCuenta"
 import { AuthProvider } from "./context/AuthContext"
+import PrivateLayout from "./layouts/PrivateLayout"
+import Proyectos from "./pages/Proyectos"
 
 function App() {
 
@@ -13,6 +15,7 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+          {/* rutas publicas */}
           <Route path="/" element={<AuthLayout />}>
             <Route index element={<Login />} />
             <Route path="registrar" element={<Registrar />} />
@@ -20,7 +23,14 @@ function App() {
             <Route path="olvide-password/:token" element={<NuevaPassword />} />
             <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
           </Route>
+          {/* rutras privadas */}
+          <Route path="/proyectos" element={<PrivateLayout />}>
+            <Route index element={<Proyectos />}></Route>
+          </Route>
         </Routes>
+
+
+
       </AuthProvider>
     </BrowserRouter>
   )
