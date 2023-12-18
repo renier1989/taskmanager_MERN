@@ -59,6 +59,7 @@ const checkAuth = async (req: Request, res: Response, next: NextFunction): Promi
             const tokenDecoded = jwt.verify(token, envJWT) as DecodedToken;
 
             try {
+                // cuando se le pone a la consulta un "-" antes del campo , se esta indicando que no quiero esos campos,lo omito
                 req.usuario = await Usuario.findById(tokenDecoded.id).select("-password -__v -createdAt -updatedAt -token -confirmado");
                 return next();
             } catch (error) {
