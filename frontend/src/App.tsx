@@ -8,6 +8,7 @@ import ConfirmarCuenta from "./pages/ConfirmarCuenta"
 import { AuthProvider } from "./context/AuthContext"
 import PrivateLayout from "./layouts/PrivateLayout"
 import Proyectos from "./pages/Proyectos"
+import NuevoProyecto from "./pages/NuevoProyecto"
 
 function App() {
 
@@ -25,7 +26,8 @@ function App() {
           </Route>
           {/* rutras privadas */}
           <Route path="/proyectos" element={<PrivateLayout />}>
-            <Route index element={<Proyectos />}></Route>
+            <Route index element={<Proyectos />} />
+            <Route path="nuevo-proyecto" element={<NuevoProyecto />} />
           </Route>
         </Routes>
 

@@ -1,4 +1,4 @@
-import {  ReactNode, createContext, useEffect, useState } from "react";
+import {  createContext, useEffect, useState } from "react";
 import { TAuth, authValues } from "../interfaces/AuthType";
 import AxiosClient from "../config/AxiosClient";
 import { useNavigate } from "react-router-dom";
@@ -9,9 +9,14 @@ interface IAuthContext {
     setAuth: React.Dispatch<React.SetStateAction<TAuth>>
 }
 
-const AuthContext = createContext<IAuthContext>(null!);
+interface IAuthProvider {
+    children: JSX.Element | JSX.Element[];
+}
 
-const AuthProvider = ({ children }: { children: ReactNode }) => {
+const AuthContext = createContext<IAuthContext>({} as IAuthContext);
+
+const AuthProvider = ({ children }:IAuthProvider) => {
+// const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     const navigate = useNavigate();
     const [auth, setAuth] = useState(authValues);
@@ -34,7 +39,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             try {
                 const { data } = await AxiosClient('/usuarios/perfil', config)
                 setAuth(data)
-                navigate('/proyectos')
+                // navigate('/proyectos')
                 
             } catch (error) {
                 setAuth(authValues)

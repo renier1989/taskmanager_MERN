@@ -32,7 +32,7 @@
 // export default checkAuth
 
 import { NextFunction, Request, Response } from "express";
-import jwt, { VerifyErrors, Secret } from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 import Usuario, { IUsuario } from "../models/Usuario";
 
 interface DecodedToken {
