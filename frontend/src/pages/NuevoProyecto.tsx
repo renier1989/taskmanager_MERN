@@ -1,12 +1,16 @@
-import useProyecto from "../hooks/useProyectos"
+import { FomularioNuevoProyecto } from "../components/FomularioNuevoProyecto";
+// import useProyecto from "../hooks/useProyectos"
 
 function NuevoProyecto() {
-    const {proyectos} = useProyecto()
-    console.log(proyectos);
+    // const {proyectos} = useProyecto()
     
     return (
       <>
-      <h1 className="text-4xl  font-black">NuevoProyecto</h1>
+      <h1 className="text-4xl  font-black">Crear Proyecto</h1>
+
+      <div className="mt-10 flex justify-center">
+        <FomularioNuevoProyecto/>
+      </div>
       </>
     )
   }
