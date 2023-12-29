@@ -1,17 +1,8 @@
 import {  createContext, useEffect, useState } from "react";
-import { TAuth, authValues } from "../interfaces/AuthType";
+import { authValues } from "../interfaces/AuthType";
 import AxiosClient from "../config/AxiosClient";
 import { useNavigate } from "react-router-dom";
-
-interface IAuthContext {
-    cargando: boolean,
-    auth: TAuth,
-    setAuth: React.Dispatch<React.SetStateAction<TAuth>>
-}
-
-interface IAuthProvider {
-    children: JSX.Element | JSX.Element[];
-}
+import { IAuthContext, IAuthProvider } from "../interfaces/IAuth";
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
