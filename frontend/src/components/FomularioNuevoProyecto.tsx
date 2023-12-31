@@ -1,12 +1,35 @@
 import { useState } from 'react';
+import useProyecto from '../hooks/useProyectos';
+import Alerta from './Alerta';
 export const FomularioNuevoProyecto = () => {
     const [nombre, setNombre] = useState<string>('')
     const [descripcion, setDescripcion] = useState<string>('')
     const [fechaEntrega, setFechaEntrega] = useState<string>('')
     const [cliente, setCliente] = useState<string>('')
 
+    const {mostrarAlerta,alerta,registrarProyecto} = useProyecto()
+
+    const handleSubmit = (e:React.FormEvent<HTMLFormElement>) =>{
+        e.preventDefault()
+
+        if([nombre,descripcion, fechaEntrega, cliente].includes('')){
+            mostrarAlerta({
+                msg: 'Todos los campos son obligatorias',
+                error: true
+            })
+
+            return
+        }
+
+        // aqui envio los datos del formulario para registrar el nuevo poryecto
+        registrarProyecto({nombre, descripcion, fechaEntrega,cliente})
+    }
+
+    const {msg} = alerta
+
   return (
-    <form  className="bg-white py-10 px-5 md:w-1/2 rounded-lg shadow">
+    <form onSubmit={handleSubmit}  className="bg-white py-10 px-5 md:w-1/2 rounded-lg shadow">
+        {msg && <Alerta alerta={alerta} />}
         <div className='mt-5'>
             <label htmlFor="nombre" className="text-gray-700 uppercase font-bold text-sm">Nombre Proyecto</label>
             <input value={nombre} onChange={e=>setNombre(e.target.value)} type="text" id="nombre" className="border rounded-md w-full p-2 mt-2 placeholder-gray-400" placeholder="Nombre del proyecto" />

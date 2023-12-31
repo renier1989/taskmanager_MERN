@@ -3,7 +3,8 @@ import { TAuth } from "./AuthType";
 export interface IAuthContext {
     cargando: boolean,
     auth: TAuth,
-    setAuth: React.Dispatch<React.SetStateAction<TAuth>>
+    setAuth: (auth:TAuth)=>void
+    // setAuth: React.Dispatch<React.SetStateAction<TAuth>>
 }
 
 export interface IAuthProvider {
