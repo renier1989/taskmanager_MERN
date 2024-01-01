@@ -10,6 +10,7 @@ import PrivateLayout from "./layouts/PrivateLayout"
 import Proyectos from "./pages/Proyectos"
 import NuevoProyecto from "./pages/NuevoProyecto"
 import { ProyectosProvider } from "./context/ProyectosContext"
+import { Proyecto } from "./pages/Proyecto"
 
 function App() {
 
@@ -30,6 +31,8 @@ function App() {
             <Route path="/proyectos" element={<PrivateLayout />}>
               <Route index element={<Proyectos />} />
               <Route path="nuevo-proyecto" element={<NuevoProyecto />} />
+              {/* este componente que va a menejar las rutas dinamicas de los proyecto siempre deberia ir al final  */}
+              <Route path=":id" element={<Proyecto />} /> 
             </Route>
           </Routes>
         </ProyectosProvider>

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const ProyectosContext = createContext<IProyectosContext>({} as IProyectosContext);
 const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
-    const [proyectos, setProyectos] = useState('poryecto aqui')
+    const [proyectos, setProyectos] = useState({} as IProyecto )
     const [alerta, setAlerta] = useState<IAlertData>({} as IAlertData)
     const navigate = useNavigate()
 

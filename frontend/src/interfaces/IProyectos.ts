@@ -1,8 +1,9 @@
+import { IProyecto } from "../../../backend/models/Proyecto";
 import { IAlertData } from "./IAlertData";
 import { TProyecto } from "./ProyectoType";
 
 export interface IProyectosContext {
-    proyectos: string,
+    proyectos: IProyecto[],
     alerta: IAlertData,
     mostrarAlerta: (alerta:IAlertData)=>void,
     registrarProyecto: (proyecto:TProyecto)=>void,
