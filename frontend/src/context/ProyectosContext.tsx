@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { IProyectosContext, IProyectosProvider } from "../interfaces/IProyectos";
 import { IAlertData } from '../interfaces/IAlertData';
 import { IProyecto } from '../../../backend/models/Proyecto';
@@ -11,17 +11,42 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
     const [proyectos, setProyectos] = useState('poryecto aqui')
     const [alerta, setAlerta] = useState<IAlertData>({} as IAlertData)
-
     const navigate = useNavigate()
 
-    const mostrarAlerta = (alerta: IAlertData) => {
 
+    // para llamar los poryectos que el usuario logeado ha creado.
+    useEffect(() => {
+        const obtenerProyectos = async () => {
+            try {
+                const tokenLS = localStorage.getItem('token');
+                if (!tokenLS) {
+                    console.log('no hay token!');
+                    return
+                }
+                const configUrl = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${tokenLS}`
+                    }
+                }
+                const {data} = await AxiosClient('/proyectos', configUrl);
+                // console.log(data);
+                setProyectos(data);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        obtenerProyectos()
+    }, [])
+
+
+    const mostrarAlerta = (alerta: IAlertData) => {
         setAlerta(alerta);
         setTimeout(() => {
             setAlerta({} as IAlertData)
         }, 4000);
     }
-
     const registrarProyecto = async (proyecto: TProyecto) => {
         try {
             const token = localStorage.getItem('token');
@@ -49,7 +74,6 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             console.log(error);
         }
     }
-
 
     return (
         <ProyectosContext.Provider value={{

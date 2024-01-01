@@ -19,10 +19,8 @@ export const FomularioNuevoProyecto = () => {
             })
             return
         }
-
         // aqui envio los datos del formulario para registrar el nuevo poryecto
         await registrarProyecto({ nombre, descripcion, fechaEntrega, cliente })
-
         // limpio el formulario
         setNombre('');
         setDescripcion('');
