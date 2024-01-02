@@ -1,4 +1,4 @@
-import { FomularioNuevoProyecto } from "../components/FomularioNuevoProyecto";
+import { FomularioProyecto } from "../components/FomularioProyecto";
 // import useProyecto from "../hooks/useProyectos"
 
 function NuevoProyecto() {
@@ -9,7 +9,7 @@ function NuevoProyecto() {
       <h1 className="text-4xl  font-black">Crear Proyecto</h1>
 
       <div className="mt-10 flex justify-center">
-        <FomularioNuevoProyecto/>
+        <FomularioProyecto/>
       </div>
       </>
     )

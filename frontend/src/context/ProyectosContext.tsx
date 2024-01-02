@@ -1,17 +1,16 @@
 import { createContext, useEffect, useState } from 'react';
-import { IProyectosContext, IProyectosProvider } from '../interfaces/IProyectos';
+import { IFProyecto, IProyectosContext, IProyectosProvider } from '../interfaces/IProyectos';
 import { IAlertData } from '../interfaces/IAlertData';
 import { TProyecto } from '../interfaces/ProyectoType';
 import AxiosClient from '../config/AxiosClient';
 import {  useNavigate } from 'react-router-dom';
-import { IProyecto } from '../../../backend/models/Proyecto';
 
 const ProyectosContext = createContext<IProyectosContext>({} as IProyectosContext);
 const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
-    const [proyectos, setProyectos] = useState<IProyecto[]>({} as IProyecto[] )
+    const [proyectos, setProyectos] = useState<IFProyecto[]>({} as IFProyecto[] )
     const [alerta, setAlerta] = useState<IAlertData>({} as IAlertData)
-    const [proyecto, setProyecto] = useState<IProyecto>({} as IProyecto)
+    const [proyecto, setProyecto] = useState<IFProyecto>({} as IFProyecto)
     const [cargando, setCargando] = useState<boolean>(false)
     const navigate = useNavigate()
 

@@ -1,13 +1,34 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useProyecto from '../hooks/useProyectos';
 import Alerta from './Alerta';
-export const FomularioNuevoProyecto = () => {
+import { useParams } from 'react-router-dom';
+
+type FormularioParams = {
+    id?: string;
+}
+
+export const FomularioProyecto = () => {
+    const params = useParams<FormularioParams>()
+    const [editando, setEditando] = useState<boolean>(false);
     const [nombre, setNombre] = useState<string>('')
     const [descripcion, setDescripcion] = useState<string>('')
     const [fechaEntrega, setFechaEntrega] = useState<string>('')
     const [cliente, setCliente] = useState<string>('')
 
-    const { mostrarAlerta, alerta, registrarProyecto } = useProyecto()
+    const { mostrarAlerta, alerta, registrarProyecto, proyecto } = useProyecto()
+
+    useEffect(() => {
+        if (params.id ) {
+            setEditando(true)
+            setNombre(proyecto.nombre);
+            setDescripcion(proyecto.descripcion);
+            setFechaEntrega(proyecto.fechaEntrega?.split('T')[0]);
+            setCliente(proyecto.cliente);
+        }else{
+            setEditando(false)
+        }
+    }, [params, proyecto])
+
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -50,7 +71,7 @@ export const FomularioNuevoProyecto = () => {
                 <input value={cliente} onChange={e => setCliente(e.target.value)} type="text" id="cliente" className="border rounded-md w-full p-2 mt-2 placeholder-gray-400" placeholder="Nombre del proyecto" />
             </div>
 
-            <input type="submit" value="Crear Proyecto" className='bg-sky-600 w-full uppercase rounded-md text-white font-bold p-3 cursor-pointer hover:shadow-lg transition duration-300 mt-5' />
+            <input type="submit" value={editando ? 'Actualizar Proyecto': 'Crear Proyecto'} className='bg-sky-600 w-full uppercase rounded-md text-white font-bold p-3 cursor-pointer hover:shadow-lg transition duration-300 mt-5' />
         </form>
     )
 }

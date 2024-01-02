@@ -1,19 +1,28 @@
-import { IProyecto } from "../../../backend/models/Proyecto";
+import { IUsuario } from "../../../backend/models/Usuario";
 import { IAlertData } from "./IAlertData";
 import { TProyecto } from "./ProyectoType";
 
+export interface IFProyecto {
+  _id: string;
+  nombre: string;
+  descripcion: string;
+  fechaEntrega: string;
+  cliente: string;
+  creador: IUsuario;
+  colaboradores: IUsuario[];
+}
 
 export interface IProyectosContext {
-    proyectos: IProyecto[];
-    alerta: IAlertData;
-    mostrarAlerta: (alerta:IAlertData)=>void;
-    registrarProyecto: (proyecto:TProyecto)=>void;
-    obtenerProyecto: (id:string)=>void;
-    proyecto : IProyecto;
-    cargando: boolean;
-    // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
+  proyectos: IFProyecto[];
+  alerta: IAlertData;
+  mostrarAlerta: (alerta: IAlertData) => void;
+  registrarProyecto: (proyecto: TProyecto) => void;
+  obtenerProyecto: (id: string) => void;
+  proyecto: IFProyecto;
+  cargando: boolean;
+  // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
 }
 
 export interface IProyectosProvider {
-    children : JSX.Element | JSX.Element[]
+  children: JSX.Element | JSX.Element[];
 }
