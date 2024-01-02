@@ -3,12 +3,12 @@ import { IFProyecto, IProyectosContext, IProyectosProvider } from '../interfaces
 import { IAlertData } from '../interfaces/IAlertData';
 import { TProyecto } from '../interfaces/ProyectoType';
 import AxiosClient from '../config/AxiosClient';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const ProyectosContext = createContext<IProyectosContext>({} as IProyectosContext);
 const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
-    const [proyectos, setProyectos] = useState<IFProyecto[]>({} as IFProyecto[] )
+    const [proyectos, setProyectos] = useState<IFProyecto[]>({} as IFProyecto[])
     const [alerta, setAlerta] = useState<IAlertData>({} as IAlertData)
     const [proyecto, setProyecto] = useState<IFProyecto>({} as IFProyecto)
     const [cargando, setCargando] = useState<boolean>(false)
@@ -29,7 +29,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
                         Authorization: `Bearer ${tokenLS}`
                     }
                 }
-                const {data} = await AxiosClient('/proyectos', configUrl);
+                const { data } = await AxiosClient('/proyectos', configUrl);
                 // console.log(data);
                 setProyectos(data);
 
@@ -46,7 +46,15 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             setAlerta({} as IAlertData)
         }, 4000);
     }
-    const registrarProyecto = async (proyecto: TProyecto) => {
+    const submitProyecto = async (proyecto: TProyecto) => {
+        if (proyecto.id) {
+            editarProyecto(proyecto)
+        } else {
+            crearProyecto(proyecto)
+        }
+    }
+
+    const crearProyecto = async (proyecto: TProyecto) => {
         try {
             const token = localStorage.getItem('token');
             if (!token) return
@@ -58,7 +66,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             }
 
             // registro el nuevo proyecto en la BD
-            const {data} = await AxiosClient.post('/proyectos', proyecto, config);
+            const { data } = await AxiosClient.post('/proyectos', proyecto, config);
 
             setProyectos([...proyectos, data])
             // muestro una alerta del pryecto crado
@@ -71,34 +79,67 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
                 navigate('/proyectos')
             }, 3000);
 
-            
+
 
         } catch (error) {
             console.log(error);
         }
     }
 
-    const obtenerProyecto = async (id:string) =>{
+    const editarProyecto = async (proyecto: TProyecto) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            // registro el nuevo proyecto en la BD
+            const { data } = await AxiosClient.put(`/proyectos/${proyecto.id}`, proyecto, config);
+
+            // setProyectos([...proyectos, data])
+            // muestro una alerta del pryecto crado
+            setAlerta({
+                msg: 'Proyecto actualizado correctamente.!',
+                error: false
+            })
+            // aqui redirecciono a la vista de los proyectos
+            setTimeout(() => {
+                navigate('/proyectos')
+            }, 3000);
+
+
+
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
+    const obtenerProyecto = async (id: string) => {
         // console.log(id);
         setCargando(true)
         try {
             const tokenLS = localStorage.getItem('token');
-                if (!tokenLS) {
-                    console.log('no hay token!');
-                    return
+            if (!tokenLS) {
+                console.log('no hay token!');
+                return
+            }
+            const configUrl = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${tokenLS}`
                 }
-                const configUrl = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${tokenLS}`
-                    }
-                }
-                const {data} = await AxiosClient(`/proyectos/${id}`, configUrl);
-                setProyecto(data.proyecto);
-                
+            }
+            const { data } = await AxiosClient(`/proyectos/${id}`, configUrl);
+            setProyecto(data.proyecto);
+
         } catch (error) {
             console.log(error);
-        }finally{
+        } finally {
             setCargando(false)
         }
     }
@@ -108,7 +149,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             proyectos,
             mostrarAlerta,
             alerta,
-            registrarProyecto,
+            submitProyecto,
             obtenerProyecto,
             proyecto,
             cargando

@@ -16,7 +16,7 @@ export interface IProyectosContext {
   proyectos: IFProyecto[];
   alerta: IAlertData;
   mostrarAlerta: (alerta: IAlertData) => void;
-  registrarProyecto: (proyecto: TProyecto) => void;
+  submitProyecto: (proyecto: TProyecto) => void;
   obtenerProyecto: (id: string) => void;
   proyecto: IFProyecto;
   cargando: boolean;

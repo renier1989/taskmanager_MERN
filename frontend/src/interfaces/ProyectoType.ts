@@ -1,4 +1,5 @@
 export type TProyecto = {
+    id?: string;
     nombre : string;
     descripcion : string;
     fechaEntrega: string;
