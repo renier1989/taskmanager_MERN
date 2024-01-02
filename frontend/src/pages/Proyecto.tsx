@@ -14,7 +14,7 @@ type ProyectoParams = {
 
 export const Proyecto = () => {
   const params = useParams<ProyectoParams>()
-  const { obtenerProyecto, proyecto, cargando } = useProyecto()
+  const { obtenerProyecto, proyecto, cargando,handleModalTarea } = useProyecto()
   // console.log(params);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export const Proyecto = () => {
         </div>
       </div>
 
-      <button className="bg-sky-500 text-white px-5 py-2 uppercase rounded-md w-full md:w-auto text-sm font-bold text-center mt-5 hover:shadow-md transition-all duration-500 flex gap-2 items-center">
+      <button onClick={handleModalTarea} className="bg-sky-500 text-white px-5 py-2 uppercase rounded-md w-full md:w-auto text-sm font-bold text-center mt-5 hover:shadow-md transition-all duration-500 flex gap-2 items-center">
         <PlusIcon/>
         Nueva Tarea
       </button>

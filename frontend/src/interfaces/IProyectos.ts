@@ -21,6 +21,8 @@ export interface IProyectosContext {
   proyecto: IFProyecto;
   cargando: boolean;
   eliminarProyecto: (id: string) => void;
+  modalFormularioTarea:boolean;
+  handleModalTarea: ()=>void;
   // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
 }
 

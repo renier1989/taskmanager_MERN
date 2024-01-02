@@ -12,6 +12,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
     const [alerta, setAlerta] = useState<IAlertData>({} as IAlertData)
     const [proyecto, setProyecto] = useState<IFProyecto>({} as IFProyecto)
     const [cargando, setCargando] = useState<boolean>(false)
+    const [modalFormularioTarea, setModalFormularioTarea] = useState<boolean>(false)
     const navigate = useNavigate()
 
     // para llamar los poryectos que el usuario logeado ha creado.
@@ -182,6 +183,10 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         
     }
 
+    const handleModalTarea = () => {
+        setModalFormularioTarea(!modalFormularioTarea)
+    }
+
     return (
         <ProyectosContext.Provider value={{
             proyectos,
@@ -191,7 +196,9 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             obtenerProyecto,
             proyecto,
             cargando,
-            eliminarProyecto
+            eliminarProyecto,
+            modalFormularioTarea,
+            handleModalTarea
         }}>
             {children}
         </ProyectosContext.Provider>
