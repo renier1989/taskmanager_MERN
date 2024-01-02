@@ -2,8 +2,14 @@ import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import useProyecto from '../hooks/useProyectos'
 
+const PRIORIDAD: string[] = ['Baja', 'Media', 'Alta'];
 
 const ModalFormularioTarea = () => {
+
+    const [nombre, setNombre] = useState<string>('');
+    const [descripcion, setDescripcion] = useState<string>('');
+    const [prioridad, setPrioridad] = useState<string>('');
+
     const { modalFormularioTarea, handleModalTarea } = useProyecto()
     return (
         <Transition.Root show={modalFormularioTarea} as={Fragment}>
@@ -56,10 +62,33 @@ const ModalFormularioTarea = () => {
 
                             <div className="sm:flex sm:items-start">
                                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                                    <Dialog.Title as="h3" className="text-lg leading-6 font-bold text-gray-900">
-                                        Titulo
+                                    <Dialog.Title as="h3" className="text-2xl leading-6 font-bold text-gray-900">
+                                        Crear Tarea
                                     </Dialog.Title>
-                                    <p> contenido del modal</p>
+
+                                    <form >
+                                        <div className='my-5'>
+                                            <label htmlFor="nombre" className='text-lg font-bold block mt-3'>Nombre Tarea</label>
+                                            <input type="text" id="nombre" placeholder='Nombre de la Tarea' className='p-2 border-2 text-gray-600 w-full rounded-md my-2' value={nombre} onChange={e => setNombre(e.target.value)} />
+                                        </div>
+                                        <div className='my-5'>
+                                            <label htmlFor="descripcion" className='text-lg font-bold block mt-3'>Descripción Tarea</label>
+                                            <textarea id="descripcion" placeholder='Descripción de la Tarea' className='p-2 border-2 text-gray-600 w-full rounded-md my-2' value={descripcion} onChange={e => setDescripcion(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className='my-5'>
+                                            <label htmlFor="prioridad" className='text-lg font-bold block mt-3'>Prioridad Tarea</label>
+                                            <select id="prioridad" className='p-2 border-2 text-gray-600 w-full rounded-md my-2' value={prioridad} onChange={e => setPrioridad(e.target.value)}>
+                                                <option value="">-- Seleccione la prioridad -- </option>
+                                                {PRIORIDAD.map(opcion => (
+                                                    <option key={opcion} value={opcion}>{opcion}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+
+                                        <input type="submit" className='p-3 rounded-md w-full font-bold cursor-pointer uppercase text-white text-center bg-sky-600 hover:shadow-lg transition-all duration-500' value="Crear Tarea" />
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
