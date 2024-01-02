@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
-import { IProyectosContext, IProyectosProvider } from "../interfaces/IProyectos";
+import { IFProyecto, IProyectosContext, IProyectosProvider } from '../interfaces/IProyectos';
 import { IAlertData } from '../interfaces/IAlertData';
-import { IProyecto } from '../../../backend/models/Proyecto';
 import { TProyecto } from '../interfaces/ProyectoType';
 import AxiosClient from '../config/AxiosClient';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const ProyectosContext = createContext<IProyectosContext>({} as IProyectosContext);
 const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
-    const [proyectos, setProyectos] = useState({} as IProyecto )
+    const [proyectos, setProyectos] = useState<IFProyecto[]>({} as IFProyecto[] )
     const [alerta, setAlerta] = useState<IAlertData>({} as IAlertData)
     const navigate = useNavigate()
 
@@ -59,7 +58,9 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             }
 
             // registro el nuevo proyecto en la BD
-            await AxiosClient.post('/proyectos', proyecto, config);
+            const {data} = await AxiosClient.post('/proyectos', proyecto, config);
+
+            setProyectos([...proyectos, data])
             // muestro una alerta del pryecto crado
             setAlerta({
                 msg: 'Proyecto creado correctamente.!',
@@ -69,6 +70,8 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             setTimeout(() => {
                 navigate('/proyectos')
             }, 3000);
+
+            
 
         } catch (error) {
             console.log(error);

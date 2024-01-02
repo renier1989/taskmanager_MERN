@@ -1,9 +1,22 @@
-import { IProyecto } from "../../../backend/models/Proyecto";
+
+import { IUsuario } from "../../../backend/models/Usuario";
 import { IAlertData } from "./IAlertData";
 import { TProyecto } from "./ProyectoType";
 
+
+export interface IFProyecto{
+    _id: string,
+    nombre: string,
+    descripcion: string,
+    fechaEntrega: Date,
+    cliente: string,
+    creador: IUsuario,
+    colaboradores: IUsuario[],
+}
+
+
 export interface IProyectosContext {
-    proyectos: IProyecto[],
+    proyectos: IFProyecto[],
     alerta: IAlertData,
     mostrarAlerta: (alerta:IAlertData)=>void,
     registrarProyecto: (proyecto:TProyecto)=>void,
