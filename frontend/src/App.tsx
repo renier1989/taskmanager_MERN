@@ -11,6 +11,7 @@ import Proyectos from "./pages/Proyectos"
 import NuevoProyecto from "./pages/NuevoProyecto"
 import { ProyectosProvider } from "./context/ProyectosContext"
 import { Proyecto } from "./pages/Proyecto"
+import { EditarProyecto } from "./pages/EditarProyecto"
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
               <Route path="nuevo-proyecto" element={<NuevoProyecto />} />
               {/* este componente que va a menejar las rutas dinamicas de los proyecto siempre deberia ir al final  */}
               <Route path=":id" element={<Proyecto />} /> 
+              <Route path="editar/:id" element={<EditarProyecto />} /> 
             </Route>
           </Routes>
         </ProyectosProvider>
