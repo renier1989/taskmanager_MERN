@@ -6,6 +6,7 @@ import { Loader } from "../components/Loader"
 import { EditarIcon } from "../components/icons/EditarIcon"
 import { ButtonEliminarProyecto } from "../components/ButtonEliminarProyecto"
 import { PlusIcon } from "../components/icons/PlusIcon"
+import ModalFormularioTarea from "../components/ModalFormularioTarea"
 
 type ProyectoParams = {
   id?: string
@@ -56,6 +57,8 @@ export const Proyecto = () => {
         <PlusIcon/>
         Nueva Tarea
       </button>
+
+      <ModalFormularioTarea/>
     </>
   )
 
