@@ -48,9 +48,9 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
     }
     const submitProyecto = async (proyecto: TProyecto) => {
         if (proyecto.id) {
-            editarProyecto(proyecto)
+            await editarProyecto(proyecto)
         } else {
-            crearProyecto(proyecto)
+            await crearProyecto(proyecto)
         }
     }
 
@@ -76,10 +76,9 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             })
             // aqui redirecciono a la vista de los proyectos
             setTimeout(() => {
+                setAlerta({} as IAlertData)
                 navigate('/proyectos')
-            }, 3000);
-
-
+            }, 2000);
 
         } catch (error) {
             console.log(error);
@@ -97,10 +96,14 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
                 }
             }
 
-            // registro el nuevo proyecto en la BD
+            // actualizo el  proyecto en la BD, y retorno el proyecto que fue actualizado
             const { data } = await AxiosClient.put(`/proyectos/${proyecto.id}`, proyecto, config);
 
-            // setProyectos([...proyectos, data])
+            // aqui hago una sincronización de los proyectos con el proyecto que fue acrualizado.
+            // al hacerl el map a los proyectos lo que hago es retornar un nuevo arreglo pero sustitulo el editado 
+            const proyectosActualizado = proyectos.map(proyectoState => proyectoState._id === data._id ? data : proyectoState);
+            setProyectos(proyectosActualizado);
+
             // muestro una alerta del pryecto crado
             setAlerta({
                 msg: 'Proyecto actualizado correctamente.!',
@@ -108,8 +111,9 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             })
             // aqui redirecciono a la vista de los proyectos
             setTimeout(() => {
+                setAlerta({} as IAlertData)
                 navigate('/proyectos')
-            }, 3000);
+            }, 2000);
 
 
 
