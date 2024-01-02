@@ -20,6 +20,7 @@ export interface IProyectosContext {
   obtenerProyecto: (id: string) => void;
   proyecto: IFProyecto;
   cargando: boolean;
+  eliminarProyecto: (id: string) => void;
   // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
 }
 

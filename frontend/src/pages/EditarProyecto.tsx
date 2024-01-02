@@ -3,6 +3,7 @@ import useProyecto from "../hooks/useProyectos";
 import { useEffect } from "react";
 import { Loader } from "../components/Loader";
 import { FomularioProyecto } from "../components/FomularioProyecto";
+import { ButtonEliminarProyecto } from "../components/ButtonEliminarProyecto";
 
 type EditarProyectoParams = {
     id?: string;
@@ -26,13 +27,17 @@ export const EditarProyecto = () => {
     }, [params.id])
 
 
-    const { nombre } = proyecto
+    const { nombre,_id} = proyecto
 
     if (cargando) return (<><Loader /><Loader /></>)
 
     return (
         <>
-            <h1 className="text-4xl font-black"> {nombre}</h1>
+            <div className="flex justify-between">
+                <h1 className="text-4xl font-black">Editar Proyecto : {nombre}</h1>
+
+                <ButtonEliminarProyecto id={_id}/>
+            </div>
 
             <div className="mt-10 flex justify-center">
                 <FomularioProyecto />
