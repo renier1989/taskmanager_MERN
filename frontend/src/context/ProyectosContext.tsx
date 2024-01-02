@@ -11,8 +11,9 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
     const [proyectos, setProyectos] = useState<IProyecto[]>({} as IProyecto[] )
     const [alerta, setAlerta] = useState<IAlertData>({} as IAlertData)
+    const [proyecto, setProyecto] = useState<IProyecto>({} as IProyecto)
+    const [cargando, setCargando] = useState<boolean>(false)
     const navigate = useNavigate()
-
 
     // para llamar los poryectos que el usuario logeado ha creado.
     useEffect(() => {
@@ -80,6 +81,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
     const obtenerProyecto = async (id:string) =>{
         // console.log(id);
+        setCargando(true)
         try {
             const tokenLS = localStorage.getItem('token');
                 if (!tokenLS) {
@@ -93,11 +95,12 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
                     }
                 }
                 const {data} = await AxiosClient(`/proyectos/${id}`, configUrl);
-                console.log(data);
+                setProyecto(data.proyecto);
                 
         } catch (error) {
             console.log(error);
-            
+        }finally{
+            setCargando(false)
         }
     }
 
@@ -108,6 +111,8 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             alerta,
             registrarProyecto,
             obtenerProyecto,
+            proyecto,
+            cargando
         }}>
             {children}
         </ProyectosContext.Provider>

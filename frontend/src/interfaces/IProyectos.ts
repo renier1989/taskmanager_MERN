@@ -4,11 +4,13 @@ import { TProyecto } from "./ProyectoType";
 
 
 export interface IProyectosContext {
-    proyectos: IProyecto[],
-    alerta: IAlertData,
-    mostrarAlerta: (alerta:IAlertData)=>void,
-    registrarProyecto: (proyecto:TProyecto)=>void,
-    obtenerProyecto: (id:string)=>void
+    proyectos: IProyecto[];
+    alerta: IAlertData;
+    mostrarAlerta: (alerta:IAlertData)=>void;
+    registrarProyecto: (proyecto:TProyecto)=>void;
+    obtenerProyecto: (id:string)=>void;
+    proyecto : IProyecto;
+    cargando: boolean;
     // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
 }
 
