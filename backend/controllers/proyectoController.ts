@@ -52,8 +52,11 @@ const obtenerProyecto:ExpressReqRes = async (req,res)=>{
         }
 
         // obtengo las tareas del proyecto que estoy consultando
-        const tareas = await Tarea.find().where('proyecto').equals(proyecto._id);
-        res.status(200).json({proyecto, tareas})
+        // const tareas = await Tarea.find().where('proyecto').equals(proyecto._id);
+
+        res.status(200).json({proyecto
+            // , tareas
+        })
 
     } catch (error) {
         console.log(error);

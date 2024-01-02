@@ -1,14 +1,15 @@
 import { createContext, useEffect, useState } from 'react';
-import { IFProyecto, IProyectosContext, IProyectosProvider } from '../interfaces/IProyectos';
+import { IProyectosContext, IProyectosProvider } from '../interfaces/IProyectos';
 import { IAlertData } from '../interfaces/IAlertData';
 import { TProyecto } from '../interfaces/ProyectoType';
 import AxiosClient from '../config/AxiosClient';
-import { useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
+import { IProyecto } from '../../../backend/models/Proyecto';
 
 const ProyectosContext = createContext<IProyectosContext>({} as IProyectosContext);
 const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
-    const [proyectos, setProyectos] = useState<IFProyecto[]>({} as IFProyecto[] )
+    const [proyectos, setProyectos] = useState<IProyecto[]>({} as IProyecto[] )
     const [alerta, setAlerta] = useState<IAlertData>({} as IAlertData)
     const navigate = useNavigate()
 
@@ -38,7 +39,6 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         }
         obtenerProyectos()
     }, [])
-
 
     const mostrarAlerta = (alerta: IAlertData) => {
         setAlerta(alerta);
@@ -78,12 +78,36 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         }
     }
 
+    const obtenerProyecto = async (id:string) =>{
+        // console.log(id);
+        try {
+            const tokenLS = localStorage.getItem('token');
+                if (!tokenLS) {
+                    console.log('no hay token!');
+                    return
+                }
+                const configUrl = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${tokenLS}`
+                    }
+                }
+                const {data} = await AxiosClient(`/proyectos/${id}`, configUrl);
+                console.log(data);
+                
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
     return (
         <ProyectosContext.Provider value={{
             proyectos,
             mostrarAlerta,
             alerta,
             registrarProyecto,
+            obtenerProyecto,
         }}>
             {children}
         </ProyectosContext.Provider>

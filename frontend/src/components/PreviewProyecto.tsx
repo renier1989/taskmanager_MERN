@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
-import { IFProyecto } from '../interfaces/IProyectos';
-
+import { IProyecto } from '../../../backend/models/Proyecto';
 interface props {
-    proyecto: IFProyecto
+    proyecto: IProyecto
 }
 
 export const PreviewProyecto = ({ proyecto }: props) => {
