@@ -10,6 +10,7 @@ const ModalFormularioTarea = () => {
     const [nombre, setNombre] = useState<string>('');
     const [descripcion, setDescripcion] = useState<string>('');
     const [prioridad, setPrioridad] = useState<string>('');
+    const [fechaEntrega, setFechaEntrega] = useState<string>('');
 
     const { modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea,proyecto } = useProyecto()
 
@@ -23,8 +24,18 @@ const ModalFormularioTarea = () => {
             })
             return;
         }
+        
 
-        submitTarea({nombre, descripcion, prioridad, proyecto: proyecto._id})
+        if(proyecto._id){
+            submitTarea({nombre, descripcion, prioridad,fechaEntrega, proyecto: proyecto._id})
+        }else{
+            mostrarAlerta({
+                msg: 'El proyecto no es valido!',
+                error: true
+            })
+            return;
+        }
+
         // console.log(proyecto);
         
 
@@ -90,16 +101,20 @@ const ModalFormularioTarea = () => {
                                     <form onSubmit={handleSubmit} >
 
                                         {msg && <Alerta alerta={alerta} />}
-                                        <div className='my-5'>
+                                        <div className='my-2'>
                                             <label htmlFor="nombre" className='text-lg font-bold block mt-3'>Nombre Tarea</label>
                                             <input type="text" id="nombre" placeholder='Nombre de la Tarea' className='p-2 border-2 text-gray-600 w-full rounded-md my-2' value={nombre} onChange={e => setNombre(e.target.value)} />
                                         </div>
-                                        <div className='my-5'>
+                                        <div className='my-2'>
                                             <label htmlFor="descripcion" className='text-lg font-bold block mt-3'>Descripción Tarea</label>
                                             <textarea id="descripcion" placeholder='Descripción de la Tarea' className='p-2 border-2 text-gray-600 w-full rounded-md my-2' value={descripcion} onChange={e => setDescripcion(e.target.value)}
                                             />
                                         </div>
-                                        <div className='my-5'>
+                                        <div className='my-2'>
+                                            <label htmlFor="fecha-entrega" className='text-lg font-bold block mt-3'>Fecha de Entrega</label>
+                                            <input type="date" id="fecha-enterga" placeholder='Nombre de la Tarea' className='p-2 border-2 text-gray-600 w-full rounded-md my-2' value={fechaEntrega} onChange={e => setFechaEntrega(e.target.value)} />
+                                        </div>
+                                        <div className='my-2'>
                                             <label htmlFor="prioridad" className='text-lg font-bold block mt-3'>Prioridad Tarea</label>
                                             <select id="prioridad" className='p-2 border-2 text-gray-600 w-full rounded-md my-2' value={prioridad} onChange={e => setPrioridad(e.target.value)}>
                                                 <option value="">-- Seleccione la prioridad -- </option>

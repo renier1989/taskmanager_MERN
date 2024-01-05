@@ -48,6 +48,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             setAlerta({} as IAlertData)
         }, 4000);
     }
+
     const submitProyecto = async (proyecto: TProyecto) => {
         if (proyecto.id) {
             await editarProyecto(proyecto)
@@ -150,7 +151,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         }
     }
 
-    const eliminarProyecto = async (id:string)=>{
+    const eliminarProyecto = async (id: string) => {
         try {
             const token = localStorage.getItem('token');
             if (!token) return
@@ -176,21 +177,37 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
                 navigate('/proyectos')
             }, 2000);
 
-            
+
         } catch (error) {
             console.log(error);
-            
+
         }
-        
+
     }
 
     const handleModalTarea = () => {
         setModalFormularioTarea(!modalFormularioTarea)
     }
 
-    const submitTarea = async (tarea:TTarea) => {
-        console.log(tarea);
-        
+    const submitTarea = async (tarea: TTarea) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const { data } = await AxiosClient.post('/tareas', tarea, config)
+            console.log(data);
+
+        } catch (error) {
+            console.log(error);
+
+        }
+
     }
 
     return (
