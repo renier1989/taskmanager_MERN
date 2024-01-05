@@ -30,6 +30,7 @@ export interface IProyectosContext {
   tarea: TTarea;
   modalEliminarTarea : boolean;
   handleModalEliminarTarea: (tarea:TTarea)=>void;
+  eliminarTarea: ()=>void;
 
   // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
 }

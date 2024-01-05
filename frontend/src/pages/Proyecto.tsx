@@ -9,6 +9,7 @@ import { PlusIcon } from "../components/icons/PlusIcon"
 import ModalFormularioTarea from "../components/ModalFormularioTarea"
 import { TareaItem } from "../components/TareaItem"
 import ModalEliminarTarea from "../components/ModalEliminarTarea"
+import Alerta from "../components/Alerta"
 
 type ProyectoParams = {
   id?: string
@@ -16,7 +17,7 @@ type ProyectoParams = {
 
 export const Proyecto = () => {
   const params = useParams<ProyectoParams>()
-  const { obtenerProyecto, proyecto, cargando,handleModalTarea } = useProyecto()
+  const { obtenerProyecto, proyecto, cargando,handleModalTarea, alerta } = useProyecto()
   // console.log(params);
 
   useEffect(() => {
@@ -32,6 +33,7 @@ export const Proyecto = () => {
 
 
   const { nombre, _id } = proyecto
+  const {msg} = alerta
 
   if (cargando) return (
     <>
@@ -63,6 +65,11 @@ export const Proyecto = () => {
       </button>
 
       <p className="font-bold  text-xl mt-10">Tareas del Proyecto</p>
+      <div className="flex justify-center">
+        <div className="w-full md:w-1/3  lg:w-1/4">
+        {msg && <Alerta alerta={alerta} />}
+        </div>
+      </div>
       <div className="bg-white  shadow mt-10 rounded-lg">
         {proyecto.tareas?.length ? 
           proyecto.tareas?.map(tarea=> <TareaItem key={tarea._id} tarea={tarea}/>)

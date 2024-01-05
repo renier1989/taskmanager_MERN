@@ -192,7 +192,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         setModalFormularioTarea(!modalFormularioTarea)
         setTarea({} as TTarea)
     }
-    
+
     const submitTarea = async (tarea: TTarea) => {
         if (tarea?._id) {
             await editarTarea(tarea);
@@ -227,23 +227,30 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
     }
 
     const editarTarea = async (tarea: TTarea) => {
-        const token = localStorage.getItem('token');
-        if (!token) return
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`
+
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
             }
+
+            const { data } = await AxiosClient.put(`/tareas/${tarea._id}`, tarea, config)
+
+            const proyectoActualizado = { ...proyecto };
+            proyectoActualizado.tareas = proyectoActualizado.tareas.map(tareaState => tareaState._id === data._id ? data : tareaState);
+            setProyecto(proyectoActualizado)
+
+            setAlerta({} as IAlertData)
+            setModalFormularioTarea(false)
+
+        } catch (error) {
+            console.log(error);
+
         }
-
-        const { data } = await AxiosClient.put(`/tareas/${tarea._id}`, tarea, config)
-        
-        const proyectoActualizado = {...proyecto};
-        proyectoActualizado.tareas = proyectoActualizado.tareas.map(tareaState => tareaState._id === data._id ? data : tareaState);
-        setProyecto(proyectoActualizado)
-
-        setAlerta({} as IAlertData)
-        setModalFormularioTarea(false)
 
     }
 
@@ -253,7 +260,33 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
     }
     const handleModalEliminarTarea = (tarea: TTarea) => {
         setModalEliminarTarea(!modalEliminarTarea)
-        modalEliminarTarea ? setTarea(tarea): setTarea({} as TTarea)
+        modalEliminarTarea ? setTarea({} as TTarea) : setTarea(tarea)
+    }
+
+    const eliminarTarea = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) return
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const { data } = await AxiosClient.delete(`/tareas/${tarea._id}`, config)
+        setAlerta({
+            msg: data.msg,
+            error: false
+        })
+        const proyectoActualizado = { ...proyecto };
+        proyectoActualizado.tareas = proyectoActualizado.tareas.filter(tareaState => tareaState._id !== tarea._id)
+        setProyecto(proyectoActualizado);
+        setModalEliminarTarea(false)
+        setTarea({} as TTarea)
+
+        setTimeout(() => {
+            setAlerta({} as IAlertData)
+        }, 3000);
     }
 
     return (
@@ -272,7 +305,8 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             handleModalEtidarTarea,
             tarea,
             modalEliminarTarea,
-            handleModalEliminarTarea
+            handleModalEliminarTarea,
+            eliminarTarea
         }}>
             {children}
         </ProyectosContext.Provider>
