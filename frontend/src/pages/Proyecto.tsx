@@ -8,6 +8,7 @@ import { ButtonEliminarProyecto } from "../components/ButtonEliminarProyecto"
 import { PlusIcon } from "../components/icons/PlusIcon"
 import ModalFormularioTarea from "../components/ModalFormularioTarea"
 import { TareaItem } from "../components/TareaItem"
+import ModalEliminarTarea from "../components/ModalEliminarTarea"
 
 type ProyectoParams = {
   id?: string
@@ -69,6 +70,7 @@ export const Proyecto = () => {
         <p className="my-5 p-10 text-center">No se han registrado tareas en este proyecto!</p>}
       </div>
       <ModalFormularioTarea/>
+      <ModalEliminarTarea/>
     </>
   )
   :

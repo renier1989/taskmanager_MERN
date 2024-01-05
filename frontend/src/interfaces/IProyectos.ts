@@ -1,7 +1,7 @@
 import { IUsuario } from "../../../backend/models/Usuario";
 import { IAlertData } from "./IAlertData";
 import { TProyecto } from "./ProyectoType";
-import { TTarea } from "./TareaType";
+import { TTarea } from './TareaType';
 
 export interface IFProyecto {
   _id: string;
@@ -28,6 +28,9 @@ export interface IProyectosContext {
   submitTarea: (tarea: TTarea) => void;
   handleModalEtidarTarea: (tarea:TTarea)=>void;
   tarea: TTarea;
+  modalEliminarTarea : boolean;
+  handleModalEliminarTarea: (tarea:TTarea)=>void;
+
   // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
 }
 

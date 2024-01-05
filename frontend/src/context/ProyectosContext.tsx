@@ -14,6 +14,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
     const [proyecto, setProyecto] = useState<IFProyecto>({} as IFProyecto)
     const [cargando, setCargando] = useState<boolean>(false)
     const [modalFormularioTarea, setModalFormularioTarea] = useState<boolean>(false)
+    const [modalEliminarTarea, setModalEliminarTarea] = useState<boolean>(false)
     const [tarea, setTarea] = useState<TTarea>({} as TTarea)
     const navigate = useNavigate()
 
@@ -191,7 +192,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         setModalFormularioTarea(!modalFormularioTarea)
         setTarea({} as TTarea)
     }
-
+    
     const submitTarea = async (tarea: TTarea) => {
         if (tarea?._id) {
             await editarTarea(tarea);
@@ -250,6 +251,10 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         setTarea(tarea)
         setModalFormularioTarea(true)
     }
+    const handleModalEliminarTarea = (tarea: TTarea) => {
+        setModalEliminarTarea(!modalEliminarTarea)
+        modalEliminarTarea ? setTarea(tarea): setTarea({} as TTarea)
+    }
 
     return (
         <ProyectosContext.Provider value={{
@@ -265,7 +270,9 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             handleModalTarea,
             submitTarea,
             handleModalEtidarTarea,
-            tarea
+            tarea,
+            modalEliminarTarea,
+            handleModalEliminarTarea
         }}>
             {children}
         </ProyectosContext.Provider>

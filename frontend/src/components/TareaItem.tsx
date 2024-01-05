@@ -7,7 +7,7 @@ type TareaItemProps = {
 }
 
 export const TareaItem = ({ tarea }: TareaItemProps) => {
-    const { handleModalEtidarTarea}= useProyecto()
+    const { handleModalEtidarTarea, handleModalEliminarTarea}= useProyecto()
     const { nombre, descripcion, fechaEntrega, prioridad, estado } = tarea
 
     return (
@@ -33,7 +33,9 @@ export const TareaItem = ({ tarea }: TareaItemProps) => {
                         Incompleta
                     </button>
                 )}
-                <button type="button" className="py-2 px-4 text-white font-bold bg-red-600 text-sm uppercase rounded-lg hover:shadow-lg transition-shadow duration-300">
+                <button type="button" className="py-2 px-4 text-white font-bold bg-red-600 text-sm uppercase rounded-lg hover:shadow-lg transition-shadow duration-300"
+                onClick={()=>handleModalEliminarTarea(tarea)}
+                >
                     Eliminar
                 </button>
             </div>
