@@ -1,4 +1,4 @@
 export interface IAlertData {
-    msg: string,
+    msg: string ,
     error: boolean
 }

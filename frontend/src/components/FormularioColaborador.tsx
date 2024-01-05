@@ -17,6 +17,7 @@ export const FormularioColaborador = () => {
                 msg: 'El Email del colaborador de obligatorio. ',
                 error: true
             })
+            return;
         }
         submitColaborador(emailColaborador)
     }
