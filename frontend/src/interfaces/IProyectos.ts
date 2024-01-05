@@ -31,6 +31,7 @@ export interface IProyectosContext {
   modalEliminarTarea : boolean;
   handleModalEliminarTarea: (tarea:TTarea)=>void;
   eliminarTarea: ()=>void;
+  submitColaborador : (email:string)=>void;
 
   // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
 }

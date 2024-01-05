@@ -258,6 +258,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         setTarea(tarea)
         setModalFormularioTarea(true)
     }
+
     const handleModalEliminarTarea = (tarea: TTarea) => {
         setModalEliminarTarea(!modalEliminarTarea)
         modalEliminarTarea ? setTarea({} as TTarea) : setTarea(tarea)
@@ -289,6 +290,10 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         }, 3000);
     }
 
+    const submitColaborador = (email:string) =>{
+        console.log(email);
+    }
+
     return (
         <ProyectosContext.Provider value={{
             proyectos,
@@ -306,7 +311,8 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             tarea,
             modalEliminarTarea,
             handleModalEliminarTarea,
-            eliminarTarea
+            eliminarTarea,
+            submitColaborador
         }}>
             {children}
         </ProyectosContext.Provider>
