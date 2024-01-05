@@ -1,14 +1,16 @@
 import mongoose, { Model, Types } from "mongoose";
 import { IUsuario } from "./Usuario";
+import { ITarea } from "./Tarea";
 
 export interface IProyecto{
-    _id: Types.ObjectId,
-    nombre: string,
-    descripcion: string,
-    fechaEntrega: Date,
-    cliente: string,
-    creador: IUsuario,
-    colaboradores: IUsuario[],
+    _id: Types.ObjectId;
+    nombre: string;
+    descripcion: string;
+    fechaEntrega: Date;
+    cliente: string;
+    creador: Types.ObjectId;
+    colaboradores: IUsuario[];
+    tareas: Types.ObjectId[];
 }
 
 type ProyectoModel = Model<IProyecto>
@@ -37,6 +39,12 @@ const proyectoSchema = new mongoose.Schema<IProyecto,ProyectoModel>({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Usuario"
     },
+    tareas: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Tarea"
+        }
+    ],
     colaboradores:[
         {
             type: mongoose.Schema.Types.ObjectId,

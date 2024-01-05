@@ -4,6 +4,7 @@ import Proyecto from "../models/Proyecto";
 import mongoose from "mongoose";
 import { isValidId } from "../helpers/validId";
 import { ITarea } from '../models/Tarea';
+import bcrypt from 'bcrypt';
 
 interface ExpressReqRes {
   (req: Request | any, res: Response): void;
@@ -26,6 +27,10 @@ const agregarTarea: ExpressReqRes = async (req, res) => {
 
   try {
     const tareaNueva = await Tarea.create(req.body);
+    // aqui registro en el proyecto las tareas relacionadas a ese proyecto
+    ExisteProyecto.tareas.push(tareaNueva._id);
+    // guardo la actualizacion del proyecto con la nueva tarea
+    await ExisteProyecto.save();
     res.status(200).json(tareaNueva);
   } catch (error) {
     console.log(error);
