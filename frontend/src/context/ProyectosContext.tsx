@@ -146,6 +146,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
         } catch (error) {
             console.log(error);
+            setProyecto({} as IFProyecto)
         } finally {
             setCargando(false)
         }

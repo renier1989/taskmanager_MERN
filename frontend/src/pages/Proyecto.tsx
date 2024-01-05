@@ -38,12 +38,14 @@ export const Proyecto = () => {
       <Loader />
     </>)
 
-  return (
+
+  return proyecto._id ?
+  (
     <>
       <div className="flex justify-between">
         <h1 className="text-4xl font-black"> {nombre}</h1>
         <div className="flex gap-2">
-          <div className=" p-2 rounded-md bg-sky-600 text-white cursor-pointer font-semibold transition-all duration-300 hover:shadow-lg">
+          <div className="self-center p-2 rounded-md bg-sky-600 text-white cursor-pointer font-semibold transition-all duration-300 hover:shadow-lg">
             <Link className="flex items-center gap-2" to={`/proyectos/editar/${params.id}`}>
               <EditarIcon />
               Editar
@@ -59,6 +61,13 @@ export const Proyecto = () => {
       </button>
 
       <ModalFormularioTarea/>
+    </>
+  )
+  :
+  (
+    <>
+      <h1>Proyecto no encontrado. volver al listdo de proyectos</h1>
+      <Link to='/proyectos'>Volver a proyectos</Link>
     </>
   )
 

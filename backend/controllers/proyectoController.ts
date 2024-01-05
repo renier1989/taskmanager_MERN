@@ -10,7 +10,7 @@ interface ExpressReqRes {
 
 // OBTENGO LOS PROYECTOS DEL USUARIO AUTENTICADO
 const obtenerProyectos:ExpressReqRes = async(req,res)=>{
-    const proyectos = await Proyecto.find().where('creador').equals(req.usuario);
+    const proyectos = await Proyecto.find().where('creador').equals(req.usuario).select('-tareas');
     res.status(200).json(proyectos);
 }
 
@@ -40,7 +40,7 @@ const obtenerProyecto:ExpressReqRes = async (req,res)=>{
             return res.status(404).json({ msg: error.message });
         }
 
-        const proyecto = await Proyecto.findById(id);
+        const proyecto = await Proyecto.findById(id).populate('tareas');
         if(!proyecto) {
             const error = new Error(`El proyecto que estas buscando no Existe.!!!`);
             return res.status(404).json({ msg: error.message });

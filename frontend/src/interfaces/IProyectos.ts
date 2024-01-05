@@ -10,6 +10,7 @@ export interface IFProyecto {
   fechaEntrega: string;
   cliente: string;
   creador: IUsuario;
+  tareas: TTarea[];
   colaboradores: IUsuario[];
 }
 
