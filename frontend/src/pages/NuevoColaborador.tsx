@@ -11,7 +11,7 @@ type FormularioColaboradorParams = {
 
 export const NuevoColaborador = () => {
     const params = useParams<FormularioColaboradorParams>()
-    const { obtenerProyecto, cargando, proyecto } = useProyecto()
+    const { obtenerProyecto, cargando, proyecto, colaborador, cargandoColaborador,agregarColaborador } = useProyecto()
     useEffect(() => {
         if (params.id) {
             obtenerProyecto(params.id)
@@ -31,6 +31,25 @@ export const NuevoColaborador = () => {
             <div className="mt-10 flex  justify-center">
                 <FormularioColaborador />
             </div>
+
+            {cargandoColaborador ? <Loader /> :
+                colaborador?._id &&
+                (
+
+                    <div className="flex  justify-center mt-10">
+                        <div className="bg-white py-10 px-5 md:w-1/2 rounded-lg shadow">
+                            <h2 className="font-bold text-2xl text-center mb-10">Resultado</h2>
+                            <div className="flex items-center justify-between">
+                                <p className="text-xl font-semibold uppercase">
+                                    {colaborador.nombre}
+                                </p>
+                                <button className="p-2 text-sm font-semibold rounded-md  cursor-pointer uppercase text-white text-center bg-slate-400 hover:shadow-lg transition-all duration-500" 
+                                onClick={()=>agregarColaborador({email: colaborador.email})}
+                                >Agregar al Proyecto</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
         </>
     )
 }

@@ -1,4 +1,5 @@
 import { IUsuario } from "../../../backend/models/Usuario";
+import { TColaborador } from "./ColaboradorType";
 import { IAlertData } from "./IAlertData";
 import { TProyecto } from "./ProyectoType";
 import { TTarea } from './TareaType';
@@ -32,6 +33,10 @@ export interface IProyectosContext {
   handleModalEliminarTarea: (tarea:TTarea)=>void;
   eliminarTarea: ()=>void;
   submitColaborador : (email:string)=>void;
+  colaborador: TColaborador;
+  cargandoColaborador: boolean;
+  agregarColaborador : (email:{email:string})=>void;
+  
 
   // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
 }

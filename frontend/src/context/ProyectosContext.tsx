@@ -5,6 +5,7 @@ import { TProyecto } from '../interfaces/ProyectoType';
 import AxiosClient from '../config/AxiosClient';
 import { useNavigate } from 'react-router-dom';
 import { TTarea } from '../interfaces/TareaType';
+import { TColaborador } from '../interfaces/ColaboradorType';
 
 const ProyectosContext = createContext<IProyectosContext>({} as IProyectosContext);
 const ProyectosProvider = ({ children }: IProyectosProvider) => {
@@ -13,9 +14,10 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
     const [alerta, setAlerta] = useState<IAlertData>({} as IAlertData)
     const [proyecto, setProyecto] = useState<IFProyecto>({} as IFProyecto)
     const [cargando, setCargando] = useState<boolean>(false)
+    const [cargandoColaborador, setCargandoColaborador] = useState<boolean>(false)
     const [modalFormularioTarea, setModalFormularioTarea] = useState<boolean>(false)
     const [modalEliminarTarea, setModalEliminarTarea] = useState<boolean>(false)
-    const [colaborador, setColaborador] = useState({})
+    const [colaborador, setColaborador] = useState<TColaborador>({} as TColaborador)
     const [tarea, setTarea] = useState<TTarea>({} as TTarea)
     const navigate = useNavigate()
 
@@ -292,7 +294,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
     }
 
     const submitColaborador = async (email: string) => {
-        setCargando(true)
+        setCargandoColaborador(true)
         try {
             const token = localStorage.getItem('token');
             if (!token) return
@@ -308,9 +310,15 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             setAlerta({} as IAlertData)
         } catch (error) {
             setAlerta({msg:error.response.data.msg , error: true});
+            setColaborador({} as TColaborador)
         }finally{
-            setCargando(false)
+            setCargandoColaborador(false)
         }
+    }
+
+    const agregarColaborador = (email:{email:string})=>{
+        console.log(email);
+        
     }
 
     return (
@@ -331,7 +339,10 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             modalEliminarTarea,
             handleModalEliminarTarea,
             eliminarTarea,
-            submitColaborador
+            submitColaborador,
+            colaborador,
+            cargandoColaborador,
+            agregarColaborador
         }}>
             {children}
         </ProyectosContext.Provider>
