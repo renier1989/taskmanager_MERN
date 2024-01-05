@@ -1,6 +1,7 @@
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import useProyecto from '../hooks/useProyectos'
+import Alerta from './Alerta';
 
 const PRIORIDAD: string[] = ['Baja', 'Media', 'Alta'];
 
@@ -10,7 +11,27 @@ const ModalFormularioTarea = () => {
     const [descripcion, setDescripcion] = useState<string>('');
     const [prioridad, setPrioridad] = useState<string>('');
 
-    const { modalFormularioTarea, handleModalTarea } = useProyecto()
+    const { modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea,proyecto } = useProyecto()
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if ([nombre, descripcion, prioridad].includes('')) {
+            mostrarAlerta({
+                msg: 'Todos los campos son obligatorias',
+                error: true
+            })
+            return;
+        }
+
+        submitTarea({nombre, descripcion, prioridad, proyecto: proyecto._id})
+        // console.log(proyecto);
+        
+
+    }
+
+    const { msg } = alerta
+
     return (
         <Transition.Root show={modalFormularioTarea} as={Fragment}>
             <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={handleModalTarea}>
@@ -66,7 +87,9 @@ const ModalFormularioTarea = () => {
                                         Crear Tarea
                                     </Dialog.Title>
 
-                                    <form >
+                                    <form onSubmit={handleSubmit} >
+
+                                        {msg && <Alerta alerta={alerta} />}
                                         <div className='my-5'>
                                             <label htmlFor="nombre" className='text-lg font-bold block mt-3'>Nombre Tarea</label>
                                             <input type="text" id="nombre" placeholder='Nombre de la Tarea' className='p-2 border-2 text-gray-600 w-full rounded-md my-2' value={nombre} onChange={e => setNombre(e.target.value)} />

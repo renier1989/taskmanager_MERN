@@ -4,6 +4,7 @@ import { IAlertData } from '../interfaces/IAlertData';
 import { TProyecto } from '../interfaces/ProyectoType';
 import AxiosClient from '../config/AxiosClient';
 import { useNavigate } from 'react-router-dom';
+import { TTarea } from '../interfaces/TareaType';
 
 const ProyectosContext = createContext<IProyectosContext>({} as IProyectosContext);
 const ProyectosProvider = ({ children }: IProyectosProvider) => {
@@ -187,6 +188,11 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         setModalFormularioTarea(!modalFormularioTarea)
     }
 
+    const submitTarea = async (tarea:TTarea) => {
+        console.log(tarea);
+        
+    }
+
     return (
         <ProyectosContext.Provider value={{
             proyectos,
@@ -198,7 +204,8 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             cargando,
             eliminarProyecto,
             modalFormularioTarea,
-            handleModalTarea
+            handleModalTarea,
+            submitTarea,
         }}>
             {children}
         </ProyectosContext.Provider>
