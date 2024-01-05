@@ -236,9 +236,10 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         }
 
         const { data } = await AxiosClient.put(`/tareas/${tarea._id}`, tarea, config)
-
-        // const proyectoTareasActualizadas = proyecto.tareas.map(tareaState => tareaState?._id === tarea?._id ? data : tareaState)
-        // setProyecto(proyectoTareasActualizadas)
+        
+        const proyectoActualizado = {...proyecto};
+        proyectoActualizado.tareas = proyectoActualizado.tareas.map(tareaState => tareaState._id === data._id ? data : tareaState);
+        setProyecto(proyectoActualizado)
 
         setAlerta({} as IAlertData)
         setModalFormularioTarea(false)
