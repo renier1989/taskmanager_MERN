@@ -7,6 +7,7 @@ import { EditarIcon } from "../components/icons/EditarIcon"
 import { ButtonEliminarProyecto } from "../components/ButtonEliminarProyecto"
 import { PlusIcon } from "../components/icons/PlusIcon"
 import ModalFormularioTarea from "../components/ModalFormularioTarea"
+import { TareaItem } from "../components/TareaItem"
 
 type ProyectoParams = {
   id?: string
@@ -60,6 +61,13 @@ export const Proyecto = () => {
         Nueva Tarea
       </button>
 
+      <p className="font-bold  text-xl mt-10">Tareas del Proyecto</p>
+      <div className="bg-white  shadow mt-10 rounded-lg">
+        {proyecto.tareas?.length ? 
+          proyecto.tareas?.map(tarea=> <TareaItem key={tarea._id} tarea={tarea}/>)
+        : 
+        <p className="my-5 p-10 text-center">No se han registrado tareas en este proyecto!</p>}
+      </div>
       <ModalFormularioTarea/>
     </>
   )
