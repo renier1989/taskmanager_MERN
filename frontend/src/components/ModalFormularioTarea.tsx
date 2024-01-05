@@ -7,6 +7,7 @@ const PRIORIDAD: string[] = ['Baja', 'Media', 'Alta'];
 
 const ModalFormularioTarea = () => {
 
+    const [id, setId] = useState<string>('');
     const [nombre, setNombre] = useState<string>('');
     const [descripcion, setDescripcion] = useState<string>('');
     const [prioridad, setPrioridad] = useState<string>('');
@@ -15,7 +16,22 @@ const ModalFormularioTarea = () => {
     const { modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea,proyecto,tarea } = useProyecto()
 
     useEffect(()=>{
-        console.log(tarea);
+        // esto es para cuando se abra el modal. si hay una tarea entonces es porque estoy editando una
+        if(tarea?._id){
+            setId(tarea._id)
+            setNombre(tarea.nombre)
+            setDescripcion(tarea.descripcion)
+            setPrioridad(tarea.prioridad)
+            const fechaU = tarea.fechaEntrega?.split('T')[0];
+            setFechaEntrega(fechaU)
+            return ;
+        }else{ // si no hay una tarea. entonces es porque quiero crear una nueva y dejo los campos del formulario vacios
+            setId('');
+            setNombre('');
+            setDescripcion('');
+            setPrioridad('');
+            setFechaEntrega('');
+        }
     },[tarea])
 
 
@@ -104,7 +120,7 @@ const ModalFormularioTarea = () => {
                             <div className="sm:flex sm:items-start">
                                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                                     <Dialog.Title as="h3" className="text-2xl leading-6 font-bold text-gray-900">
-                                        Crear Tarea
+                                        { id ? 'Editar Tarea' : 'Crear Tarea'}
                                     </Dialog.Title>
 
                                     <form onSubmit={handleSubmit} >
@@ -133,7 +149,7 @@ const ModalFormularioTarea = () => {
                                             </select>
                                         </div>
 
-                                        <input type="submit" className='p-3 rounded-md w-full font-bold cursor-pointer uppercase text-white text-center bg-sky-600 hover:shadow-lg transition-all duration-500' value="Crear Tarea" />
+                                        <input type="submit" className='p-3 rounded-md w-full font-bold cursor-pointer uppercase text-white text-center bg-sky-600 hover:shadow-lg transition-all duration-500' value={`${id ? 'Editar Tarea': 'Crear Tarea' }`} />
                                     </form>
 
                                 </div>
