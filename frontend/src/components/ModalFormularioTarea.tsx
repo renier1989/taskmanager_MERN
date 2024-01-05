@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import useProyecto from '../hooks/useProyectos'
 import Alerta from './Alerta';
@@ -14,7 +14,7 @@ const ModalFormularioTarea = () => {
 
     const { modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea,proyecto } = useProyecto()
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if ([nombre, descripcion, prioridad].includes('')) {
@@ -27,7 +27,11 @@ const ModalFormularioTarea = () => {
         
 
         if(proyecto._id){
-            submitTarea({nombre, descripcion, prioridad,fechaEntrega, proyecto: proyecto._id})
+            await submitTarea({nombre, descripcion, prioridad,fechaEntrega, proyecto: proyecto._id})
+            setNombre('');
+            setDescripcion('');
+            setPrioridad('');
+            setFechaEntrega('');
         }else{
             mostrarAlerta({
                 msg: 'El proyecto no es valido!',

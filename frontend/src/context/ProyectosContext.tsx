@@ -141,7 +141,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
                     Authorization: `Bearer ${tokenLS}`
                 }
             }
-            const { data } = await AxiosClient(`/proyectos/${id}`, configUrl);
+            const { data } = await AxiosClient(`/proyectos/${id}`, configUrl);            
             setProyecto(data.proyecto);
 
         } catch (error) {
@@ -202,7 +202,12 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             }
 
             const { data } = await AxiosClient.post('/tareas', tarea, config)
-            console.log(data);
+            // creo una nueva const con el proyecto actual para poder cargarle las tareas
+            const proyectoActualizado = {...proyecto}
+            proyectoActualizado.tareas = [...proyecto.tareas, data]
+            // cargo al state de proyecto , el proyectoActualizado con las tareas
+            setProyecto(proyectoActualizado)
+            setModalFormularioTarea(false)
 
         } catch (error) {
             console.log(error);
