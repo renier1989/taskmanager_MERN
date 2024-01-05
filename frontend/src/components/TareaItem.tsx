@@ -1,4 +1,5 @@
 import { formatearFecha } from "../helpers/formatearFecha"
+import useProyecto from "../hooks/useProyectos"
 import { TTarea } from "../interfaces/TareaType"
 
 type TareaItemProps = {
@@ -6,7 +7,9 @@ type TareaItemProps = {
 }
 
 export const TareaItem = ({ tarea }: TareaItemProps) => {
-    const { nombre, descripcion, fechaEntrega, prioridad, estado, _id } = tarea
+    const { handleModalEtidarTarea}= useProyecto()
+    const { nombre, descripcion, fechaEntrega, prioridad, estado } = tarea
+
     return (
         <div className="border-b p-5 flex justify-between items-center">
             <div>
@@ -16,7 +19,9 @@ export const TareaItem = ({ tarea }: TareaItemProps) => {
                 <p className="mb-1 text-gray-600"> Prioridad : {prioridad} </p>
             </div>
             <div className="flex gap-1">
-                <button type="button" className="py-2 px-4 text-white font-bold bg-sky-600 text-sm uppercase rounded-lg hover:shadow-lg transition-shadow duration-300">
+                <button type="button" className="py-2 px-4 text-white font-bold bg-sky-600 text-sm uppercase rounded-lg hover:shadow-lg transition-shadow duration-300"
+                onClick={()=>handleModalEtidarTarea(tarea)}
+                >
                     Editar
                 </button>
                 {estado ? (

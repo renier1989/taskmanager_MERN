@@ -26,6 +26,8 @@ export interface IProyectosContext {
   modalFormularioTarea:boolean;
   handleModalTarea: ()=>void;
   submitTarea: (tarea: TTarea) => void;
+  handleModalEtidarTarea: (tarea:TTarea)=>void;
+  tarea: TTarea;
   // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
 }
 

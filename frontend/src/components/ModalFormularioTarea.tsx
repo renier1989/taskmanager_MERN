@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import useProyecto from '../hooks/useProyectos'
 import Alerta from './Alerta';
@@ -12,7 +12,12 @@ const ModalFormularioTarea = () => {
     const [prioridad, setPrioridad] = useState<string>('');
     const [fechaEntrega, setFechaEntrega] = useState<string>('');
 
-    const { modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea,proyecto } = useProyecto()
+    const { modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea,proyecto,tarea } = useProyecto()
+
+    useEffect(()=>{
+        console.log(tarea);
+    },[tarea])
+
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
