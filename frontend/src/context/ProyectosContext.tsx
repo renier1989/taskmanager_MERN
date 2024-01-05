@@ -142,7 +142,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
                     Authorization: `Bearer ${tokenLS}`
                 }
             }
-            const { data } = await AxiosClient(`/proyectos/${id}`, configUrl);            
+            const { data } = await AxiosClient(`/proyectos/${id}`, configUrl);
             setProyecto(data.proyecto);
 
         } catch (error) {
@@ -193,6 +193,14 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
     }
 
     const submitTarea = async (tarea: TTarea) => {
+        if (tarea?._id) {
+            await editarTarea(tarea);
+        } else {
+            await crearTarea(tarea);
+        }
+    }
+
+    const crearTarea = async (tarea: TTarea) => {
         try {
             const token = localStorage.getItem('token');
             if (!token) return
@@ -205,7 +213,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
             const { data } = await AxiosClient.post('/tareas', tarea, config)
             // creo una nueva const con el proyecto actual para poder cargarle las tareas
-            const proyectoActualizado = {...proyecto}
+            const proyectoActualizado = { ...proyecto }
             proyectoActualizado.tareas = [...proyecto.tareas, data]
             // cargo al state de proyecto , el proyectoActualizado con las tareas
             setProyecto(proyectoActualizado)
@@ -213,12 +221,31 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
         } catch (error) {
             console.log(error);
-
         }
 
     }
 
-    const handleModalEtidarTarea = (tarea: TTarea) =>{
+    const editarTarea = async (tarea: TTarea) => {
+        const token = localStorage.getItem('token');
+        if (!token) return
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const { data } = await AxiosClient.put(`/tareas/${tarea._id}`, tarea, config)
+
+        // const proyectoTareasActualizadas = proyecto.tareas.map(tareaState => tareaState?._id === tarea?._id ? data : tareaState)
+        // setProyecto(proyectoTareasActualizadas)
+
+        setAlerta({} as IAlertData)
+        setModalFormularioTarea(false)
+
+    }
+
+    const handleModalEtidarTarea = (tarea: TTarea) => {
         setTarea(tarea)
         setModalFormularioTarea(true)
     }
