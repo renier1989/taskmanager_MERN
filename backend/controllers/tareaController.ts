@@ -3,8 +3,8 @@ import Tarea from "../models/Tarea";
 import Proyecto from "../models/Proyecto";
 import mongoose from "mongoose";
 import { isValidId } from "../helpers/validId";
-import { ITarea } from '../models/Tarea';
-import bcrypt from 'bcrypt';
+import { ITarea } from "../models/Tarea";
+import bcrypt from "bcrypt";
 
 interface ExpressReqRes {
   (req: Request | any, res: Response): void;
@@ -68,21 +68,19 @@ const actualizarTarea: ExpressReqRes = async (req, res) => {
       const error = new Error(`No pudimos encontrar la tarea.!!!`);
       return res.status(404).json({ msg: error.message });
     }
-    
-    const tarea:any = await Tarea.findById(id).populate("proyecto");
+
+    const tarea: any = await Tarea.findById(id).populate("proyecto");
 
     // verifico si puedo ver las tareas de un proyecto que no he creado
     if (tarea?.proyecto.creador.toString() !== req.usuario._id.toString()) {
-      const error = new Error(
-        `No puedes editar esta Tarea.!!!`
-      );
+      const error = new Error(`No puedes editar esta Tarea.!!!`);
       return res.status(401).json({ msg: error.message });
     }
 
-    tarea.nombre  = req.body.nombre || tarea.nombre;
-    tarea.descripcion  = req.body.descripcion || tarea.descripcion;
-    tarea.fechaEntrega  = req.body.fechaEntrega || tarea.fechaEntrega;
-    tarea.prioridad  = req.body.prioridad || tarea.prioridad;
+    tarea.nombre = req.body.nombre || tarea.nombre;
+    tarea.descripcion = req.body.descripcion || tarea.descripcion;
+    tarea.fechaEntrega = req.body.fechaEntrega || tarea.fechaEntrega;
+    tarea.prioridad = req.body.prioridad || tarea.prioridad;
 
     const tareaActualizada = await tarea.save();
     res.status(200).json(tareaActualizada);
@@ -91,32 +89,59 @@ const actualizarTarea: ExpressReqRes = async (req, res) => {
   }
 };
 const eliminarTarea: ExpressReqRes = async (req, res) => {
-    const { id } = req.params;
-    try {
-      // esto es para que no salte un error si el id no es valido
-      if (!isValidId(id)) {
-        const error = new Error(`No pudimos encontrar la tarea.!!!`);
-        return res.status(404).json({ msg: error.message });
-      }
-      
-      const tarea = await Tarea.findById(id).populate("proyecto");
-  
-      // verifico si puedo ver las tareas de un proyecto que no he creado
-      if (tarea?.proyecto.creador.toString() !== req.usuario._id.toString()) {
-        const error = new Error(
-          `No puedes eliminar esta Tarea.!!!`
-        );
-        return res.status(401).json({ msg: error.message });
-      }
-  
-      await tarea?.deleteOne()      
-      res.status(200).json({msg:`Tarea eliminada con exito.!!!`});
-    } catch (error) {
-      console.log(error);
+  const { id } = req.params;
+  try {
+    // esto es para que no salte un error si el id no es valido
+    if (!isValidId(id)) {
+      const error = new Error(`No pudimos encontrar la tarea.!!!`);
+      return res.status(404).json({ msg: error.message });
     }
+
+    const tarea = await Tarea.findById(id).populate("proyecto");
+
+    // verifico si puedo ver las tareas de un proyecto que no he creado
+    if (tarea?.proyecto.creador.toString() !== req.usuario._id.toString()) {
+      const error = new Error(`No puedes eliminar esta Tarea.!!!`);
+      return res.status(401).json({ msg: error.message });
+    }
+
+    await tarea?.deleteOne();
+    res.status(200).json({ msg: `Tarea eliminada con exito.!!!` });
+  } catch (error) {
+    console.log(error);
+  }
 };
 const cambiarEstadoTarea: ExpressReqRes = async (req, res) => {
-  console.log(req.params.id);
+  const { id } = req.params;
+  try {
+    // esto es para que no salte un error si el id no es valido
+    if (!isValidId(id)) {
+      const error = new Error(`No pudimos encontrar la tarea.!!!`);
+      return res.status(404).json({ msg: error.message });
+    }
+
+    const tarea = await Tarea.findById(id).populate("proyecto");
+
+    // verifico si puedo ver las tareas de un proyecto que no he creado
+    if (
+      tarea?.proyecto.creador.toString() !== req.usuario._id.toString() &&
+      !tarea?.proyecto.colaboradores.some(
+        (colaborador) =>
+          colaborador._id.toString() === req.usuario._id.toString()
+      )
+    ) {
+      const error = new Error(`No puedes eliminar esta Tarea.!!!`);
+      return res.status(401).json({ msg: error.message });
+    }
+
+    if (tarea) {
+      tarea.estado = !tarea.estado;
+    }
+    await tarea?.save();
+    res.status(200).json(tarea);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export {

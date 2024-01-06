@@ -375,8 +375,8 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
 
             // actualizo el state del proyecto con los colaboradores 
-            const proyectoActualizado = {...proyecto}
-            proyectoActualizado.colaboradores = proyectoActualizado.colaboradores.filter(colaboradorState => colaboradorState._id !== colaborador._id )
+            const proyectoActualizado = { ...proyecto }
+            proyectoActualizado.colaboradores = proyectoActualizado.colaboradores.filter(colaboradorState => colaboradorState._id !== colaborador._id)
             setProyecto(proyectoActualizado)
 
             setAlerta({
@@ -384,8 +384,8 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
                 error: false
             })
 
-           setModalEliminarColaborador(false)
-           setColaborador({} as TColaborador) 
+            setModalEliminarColaborador(false)
+            setColaborador({} as TColaborador)
         } catch (error) {
             console.log(error);
 
@@ -395,7 +395,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
     }
 
-    const completarTarea = async (id: string) =>{
+    const completarTarea = async (id: string) => {
         try {
             const token = localStorage.getItem('token');
             if (!token) return
@@ -406,15 +406,20 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
                 }
             }
 
-            const {data}= await AxiosClient.post(`tareas/estado/${id}`,{},config);
-            console.log(data);
-            
+            const { data } = await AxiosClient.post(`tareas/estado/${id}`, {}, config);
+
+            const proyectoActualizado = { ...proyecto }
+            proyectoActualizado.tareas = proyectoActualizado.tareas.map(tareaState => tareaState._id === data._id ? data : tareaState)
+            setProyecto(proyectoActualizado)
+
+            setTarea({} as TTarea)
+            setAlerta({} as IAlertData)
 
         } catch (error) {
             console.log(error);
-            
+
         }
-        
+
     }
 
     return (
