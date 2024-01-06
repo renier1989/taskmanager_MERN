@@ -1,4 +1,3 @@
-import { IUsuario } from "../../../backend/models/Usuario";
 import { TColaborador } from "./ColaboradorType";
 import { IAlertData } from "./IAlertData";
 import { TProyecto } from "./ProyectoType";
@@ -10,7 +9,7 @@ export interface IFProyecto {
   descripcion: string;
   fechaEntrega: string;
   cliente: string;
-  creador: IUsuario;
+  creador: string;
   tareas: TTarea[];
   colaboradores: TColaborador[];
 }

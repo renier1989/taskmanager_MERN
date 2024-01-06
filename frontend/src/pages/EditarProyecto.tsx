@@ -1,9 +1,11 @@
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import useProyecto from "../hooks/useProyectos";
 import { useEffect } from "react";
 import { Loader } from "../components/Loader";
 import { FomularioProyecto } from "../components/FomularioProyecto";
 import { ButtonEliminarProyecto } from "../components/ButtonEliminarProyecto";
+import useAdmin from "../hooks/useAdmin";
+import Alerta from "../components/Alerta";
 
 type EditarProyectoParams = {
     id?: string;
@@ -11,8 +13,15 @@ type EditarProyectoParams = {
 
 export const EditarProyecto = () => {
     const params = useParams<EditarProyectoParams>()
-    const { obtenerProyecto, proyecto, cargando } = useProyecto()
-    // console.log(params);
+    const { obtenerProyecto, proyecto, cargando ,alerta, mostrarAlerta } = useProyecto()
+    const admin = useAdmin()
+
+    if(!admin){
+        mostrarAlerta({
+            msg: 'Acceso no autorizado',
+            error: true
+        })
+    }
 
     useEffect(() => {
         const getProyecto = () => {
@@ -32,6 +41,7 @@ export const EditarProyecto = () => {
     if (cargando) return (<><Loader /><Loader /></>)
 
     return (
+        admin ? 
         <>
             <div className="flex justify-between">
                 <h1 className="text-4xl font-black">Editar Proyecto : {nombre}</h1>
@@ -42,6 +52,11 @@ export const EditarProyecto = () => {
             <div className="mt-10 flex justify-center">
                 <FomularioProyecto />
             </div>
+        </>
+        :
+        <>
+            <Alerta alerta={alerta} />
+            <Link className="flex items-center justify-center text-center font-bold text-sky-600 uppercase" to='/proyectos'>Volver a proyectos</Link>
         </>
     )
 }

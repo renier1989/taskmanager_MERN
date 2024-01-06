@@ -1,4 +1,5 @@
 import { formatearFecha } from "../helpers/formatearFecha"
+import useAdmin from "../hooks/useAdmin"
 import useProyecto from "../hooks/useProyectos"
 import { TTarea } from "../interfaces/TareaType"
 
@@ -7,8 +8,9 @@ type TareaItemProps = {
 }
 
 export const TareaItem = ({ tarea }: TareaItemProps) => {
-    const { handleModalEtidarTarea, handleModalEliminarTarea}= useProyecto()
+    const { handleModalEtidarTarea, handleModalEliminarTarea } = useProyecto()
     const { nombre, descripcion, fechaEntrega, prioridad, estado } = tarea
+    const admin = useAdmin()
 
     return (
         <div className="border-b p-5 flex justify-between items-center">
@@ -19,11 +21,6 @@ export const TareaItem = ({ tarea }: TareaItemProps) => {
                 <p className="mb-1 text-gray-600"> Prioridad : {prioridad} </p>
             </div>
             <div className="flex gap-1">
-                <button type="button" className="py-2 px-4 text-white font-bold bg-sky-600 text-sm uppercase rounded-lg hover:shadow-lg transition-shadow duration-300"
-                onClick={()=>handleModalEtidarTarea(tarea)}
-                >
-                    Editar
-                </button>
                 {estado ? (
                     <button type="button" className="py-2 px-4 text-white font-bold bg-green-700 text-sm uppercase rounded-lg hover:shadow-lg transition-shadow duration-300">
                         Completa
@@ -33,11 +30,20 @@ export const TareaItem = ({ tarea }: TareaItemProps) => {
                         Incompleta
                     </button>
                 )}
-                <button type="button" className="py-2 px-4 text-white font-bold bg-red-600 text-sm uppercase rounded-lg hover:shadow-lg transition-shadow duration-300"
-                onClick={()=>handleModalEliminarTarea(tarea)}
-                >
-                    Eliminar
-                </button>
+                {admin && (
+                    <>
+                        <button type="button" className="py-2 px-4 text-white font-bold bg-sky-600 text-sm uppercase rounded-lg hover:shadow-lg transition-shadow duration-300"
+                            onClick={() => handleModalEtidarTarea(tarea)}
+                        >
+                            Editar
+                        </button>
+                        <button type="button" className="py-2 px-4 text-white font-bold bg-red-600 text-sm uppercase rounded-lg hover:shadow-lg transition-shadow duration-300"
+                            onClick={() => handleModalEliminarTarea(tarea)}
+                        >
+                            Eliminar
+                        </button>
+                    </>
+                )}
             </div>
         </div>
     )
