@@ -8,8 +8,8 @@ type TareaItemProps = {
 }
 
 export const TareaItem = ({ tarea }: TareaItemProps) => {
-    const { handleModalEtidarTarea, handleModalEliminarTarea } = useProyecto()
-    const { nombre, descripcion, fechaEntrega, prioridad, estado } = tarea
+    const { handleModalEtidarTarea, handleModalEliminarTarea, completarTarea } = useProyecto()
+    const { nombre, descripcion, fechaEntrega, prioridad, estado, _id } = tarea
     const admin = useAdmin()
 
     return (
@@ -21,15 +21,15 @@ export const TareaItem = ({ tarea }: TareaItemProps) => {
                 <p className="mb-1 text-gray-600"> Prioridad : {prioridad} </p>
             </div>
             <div className="flex gap-1">
-                {estado ? (
-                    <button type="button" className="py-2 px-4 text-white font-bold bg-green-700 text-sm uppercase rounded-lg hover:shadow-lg transition-shadow duration-300">
-                        Completa
-                    </button>
-                ) : (
-                    <button type="button" className="py-2 px-4 text-white font-bold bg-gray-600 text-sm uppercase rounded-lg hover:shadow-lg transition-shadow duration-300">
-                        Incompleta
-                    </button>
-                )}
+
+                <button type="button" className={`${estado ? 'bg-green-600': 'bg-gray-600'} py-2 px-4 text-white font-bold text-sm uppercase rounded-lg hover:shadow-lg transition-shadow duration-300`}
+                
+                    onClick={() => completarTarea(_id)}
+
+                >
+                    {estado ? 'Completa': 'Incompleta'}
+                </button>
+                    
                 {admin && (
                     <>
                         <button type="button" className="py-2 px-4 text-white font-bold bg-sky-600 text-sm uppercase rounded-lg hover:shadow-lg transition-shadow duration-300"

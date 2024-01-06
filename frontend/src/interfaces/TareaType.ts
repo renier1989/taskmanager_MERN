@@ -1,5 +1,5 @@
 export type TTarea = {
-    _id?: string;
+    _id: string;
     nombre: string
     descripcion : string;
     estado?:string;

@@ -38,6 +38,7 @@ export interface IProyectosContext {
   handleModalEliminarColaborador: (colaborador: TColaborador)=>void;
   modalEliminarColaborador: boolean;
   eliminarColaborador : ()=>void;
+  completarTarea : (id:string)=>void
   
 
   // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>

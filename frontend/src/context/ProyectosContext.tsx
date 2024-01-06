@@ -6,7 +6,6 @@ import AxiosClient from '../config/AxiosClient';
 import { useNavigate } from 'react-router-dom';
 import { TTarea } from '../interfaces/TareaType';
 import { TColaborador } from '../interfaces/ColaboradorType';
-import { Colaborador } from '../components/Colaborador';
 
 const ProyectosContext = createContext<IProyectosContext>({} as IProyectosContext);
 const ProyectosProvider = ({ children }: IProyectosProvider) => {
@@ -396,6 +395,28 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
     }
 
+    const completarTarea = async (id: string) =>{
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const {data}= await AxiosClient.post(`tareas/estado/${id}`,{},config);
+            console.log(data);
+            
+
+        } catch (error) {
+            console.log(error);
+            
+        }
+        
+    }
+
     return (
         <ProyectosContext.Provider value={{
             proyectos,
@@ -420,7 +441,8 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             agregarColaborador,
             handleModalEliminarColaborador,
             modalEliminarColaborador,
-            eliminarColaborador
+            eliminarColaborador,
+            completarTarea
         }}>
             {children}
         </ProyectosContext.Provider>

@@ -115,7 +115,9 @@ const eliminarTarea: ExpressReqRes = async (req, res) => {
       console.log(error);
     }
 };
-const cambiarEstadoTarea: ExpressReqRes = async (req, res) => {};
+const cambiarEstadoTarea: ExpressReqRes = async (req, res) => {
+  console.log(req.params.id);
+};
 
 export {
   agregarTarea,
