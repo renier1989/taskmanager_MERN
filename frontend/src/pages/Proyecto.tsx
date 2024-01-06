@@ -10,6 +10,7 @@ import ModalFormularioTarea from "../components/ModalFormularioTarea"
 import { TareaItem } from "../components/TareaItem"
 import ModalEliminarTarea from "../components/ModalEliminarTarea"
 import Alerta from "../components/Alerta"
+import { Colaborador } from '../components/Colaborador';
 
 type ProyectoParams = {
   id?: string
@@ -18,8 +19,7 @@ type ProyectoParams = {
 export const Proyecto = () => {
   const params = useParams<ProyectoParams>()
   const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta } = useProyecto()
-  // console.log(params);
-
+  
   useEffect(() => {
     const getProyecto = () => {
       if (typeof params.id !== 'undefined') {
@@ -30,7 +30,6 @@ export const Proyecto = () => {
     }
     getProyecto()
   }, [params.id])
-
 
   const { nombre, _id } = proyecto
   const { msg } = alerta
@@ -80,6 +79,15 @@ export const Proyecto = () => {
         <div className="flex items-center justify-between mt-10">
           <p className="font-bold text-xl">Colaboradores</p>
           <Link to={`/proyectos/nuevo-colaborador/${proyecto._id}`} className="self-center p-2 rounded-md bg-sky-600 text-white cursor-pointer font-semibold transition-all duration-300 hover:shadow-lg">Agreagar</Link>
+        </div>
+
+        <div className="bg-white  shadow mt-10 rounded-lg">
+          {proyecto.colaboradores?.length ?
+            proyecto.colaboradores?.map(colaborador => 
+              <Colaborador key={colaborador._id} colaborador={colaborador} />
+              )
+            :
+            <p className="my-5 p-10 text-center">No se han registrado colaboradores a este proyecto!</p>}
         </div>
 
 

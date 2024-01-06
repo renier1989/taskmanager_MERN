@@ -12,7 +12,7 @@ export interface IFProyecto {
   cliente: string;
   creador: IUsuario;
   tareas: TTarea[];
-  colaboradores: IUsuario[];
+  colaboradores: TColaborador[];
 }
 
 export interface IProyectosContext {

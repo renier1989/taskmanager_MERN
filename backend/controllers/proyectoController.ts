@@ -40,7 +40,7 @@ const obtenerProyecto: ExpressReqRes = async (req, res) => {
       return res.status(404).json({ msg: error.message });
     }
 
-    const proyecto = await Proyecto.findById(id).populate("tareas");
+    const proyecto = await Proyecto.findById(id).populate("tareas").populate('colaboradores', 'nombre email');
     if (!proyecto) {
       const error = new Error(`El proyecto que estas buscando no Existe.!!!`);
       return res.status(404).json({ msg: error.message });
