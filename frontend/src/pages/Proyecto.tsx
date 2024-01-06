@@ -20,7 +20,7 @@ type ProyectoParams = {
 export const Proyecto = () => {
   const params = useParams<ProyectoParams>()
   const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta } = useProyecto()
-  
+
   useEffect(() => {
     const getProyecto = () => {
       if (typeof params.id !== 'undefined') {
@@ -43,67 +43,73 @@ export const Proyecto = () => {
     </>)
 
 
-  return proyecto._id ?
-    (
-      <>
-        <div className="flex justify-between">
-          <h1 className="text-4xl font-black"> {nombre}</h1>
-          <div className="flex gap-2">
-            <div className="self-center p-2 rounded-md bg-sky-600 text-white cursor-pointer font-semibold transition-all duration-300 hover:shadow-lg">
-              <Link className="flex items-center gap-2" to={`/proyectos/editar/${params.id}`}>
-                <EditarIcon />
-                Editar
-              </Link>
-            </div>
-            <ButtonEliminarProyecto id={_id} />
-          </div>
-        </div>
-
-        <button onClick={handleModalTarea} className="bg-sky-500 text-white px-5 py-2 uppercase rounded-md w-full md:w-auto text-sm font-bold text-center mt-5 hover:shadow-md transition-all duration-500 flex gap-2 items-center">
-          <PlusIcon />
-          Nueva Tarea
-        </button>
-
-        <p className="font-bold  text-xl mt-10">Tareas del Proyecto</p>
-        <div className="flex justify-center">
-          <div className="w-full md:w-1/3  lg:w-1/4">
-            {msg && <Alerta alerta={alerta} />}
-          </div>
-        </div>
-        <div className="bg-white  shadow mt-10 rounded-lg">
-          {proyecto.tareas?.length ?
-            proyecto.tareas?.map(tarea => <TareaItem key={tarea._id} tarea={tarea} />)
-            :
-            <p className="my-5 p-10 text-center">No se han registrado tareas en este proyecto!</p>}
-        </div>
-
-        <div className="flex items-center justify-between mt-10">
-          <p className="font-bold text-xl">Colaboradores</p>
-          <Link to={`/proyectos/nuevo-colaborador/${proyecto._id}`} className="self-center p-2 rounded-md bg-sky-600 text-white cursor-pointer font-semibold transition-all duration-300 hover:shadow-lg">Agreagar</Link>
-        </div>
-
-        <div className="bg-white  shadow mt-10 rounded-lg">
-          {proyecto.colaboradores?.length ?
-            proyecto.colaboradores?.map(colaborador => 
-              <Colaborador key={colaborador._id} colaborador={colaborador} />
-              )
-            :
-            <p className="my-5 p-10 text-center">No se han registrado colaboradores a este proyecto!</p>}
-        </div>
-
-
-
-        <ModalFormularioTarea />
-        <ModalEliminarTarea />
-        <ModalEliminarColaborador />
-      </>
-    )
-    :
-    (
+  return  (
+    msg && alerta.error ? (
       <>
         <Alerta alerta={alerta} />
         <Link className="flex items-center justify-center text-center font-bold text-sky-600 uppercase" to='/proyectos'>Volver a proyectos</Link>
       </>
     )
+      :
+      (
+        <>
+          <div className="flex justify-between">
+            <h1 className="text-4xl font-black"> {nombre}</h1>
+            <div className="flex gap-2">
+              <div className="self-center p-2 rounded-md bg-sky-600 text-white cursor-pointer font-semibold transition-all duration-300 hover:shadow-lg">
+                <Link className="flex items-center gap-2" to={`/proyectos/editar/${params.id}`}>
+                  <EditarIcon />
+                  Editar
+                </Link>
+              </div>
+              <ButtonEliminarProyecto id={_id} />
+            </div>
+          </div>
+
+          <button onClick={handleModalTarea} className="bg-sky-500 text-white px-5 py-2 uppercase rounded-md w-full md:w-auto text-sm font-bold text-center mt-5 hover:shadow-md transition-all duration-500 flex gap-2 items-center">
+            <PlusIcon />
+            Nueva Tarea
+          </button>
+
+          <p className="font-bold  text-xl mt-10">Tareas del Proyecto</p>
+          <div className="flex justify-center">
+            <div className="w-full md:w-1/3  lg:w-1/4">
+              {msg && <Alerta alerta={alerta} />}
+            </div>
+          </div>
+          <div className="bg-white  shadow mt-10 rounded-lg">
+            {proyecto.tareas?.length ?
+              proyecto.tareas?.map(tarea => <TareaItem key={tarea._id} tarea={tarea} />)
+              :
+              <p className="my-5 p-10 text-center">No se han registrado tareas en este proyecto!</p>}
+          </div>
+
+          <div className="flex items-center justify-between mt-10">
+            <p className="font-bold text-xl">Colaboradores</p>
+            <Link to={`/proyectos/nuevo-colaborador/${proyecto._id}`} className="self-center p-2 rounded-md bg-sky-600 text-white cursor-pointer font-semibold transition-all duration-300 hover:shadow-lg">Agreagar</Link>
+          </div>
+
+          <div className="bg-white  shadow mt-10 rounded-lg">
+            {proyecto.colaboradores?.length ?
+              proyecto.colaboradores?.map(colaborador =>
+                <Colaborador key={colaborador._id} colaborador={colaborador} />
+              )
+              :
+              <p className="my-5 p-10 text-center">No se han registrado colaboradores a este proyecto!</p>}
+          </div>
+
+
+
+          <ModalFormularioTarea />
+          <ModalEliminarTarea />
+          <ModalEliminarColaborador />
+        </>
+      )
+  )
+
+
+
+
+
 
 }

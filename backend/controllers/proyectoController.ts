@@ -58,7 +58,12 @@ const obtenerProyecto: ExpressReqRes = async (req, res) => {
       return res.status(404).json({ msg: error.message });
     }
 
-    if (proyecto.creador?.toString() !== req.usuario._id.toString()) {
+    // validacion para mostrar el proyecto. al usuario
+    // si no es el creador y si el usuario no esta en la lista de los colaboradores del proyecto
+    // entonces muestro la alerta que no puedo ingresar al proyecto
+    if (proyecto.creador?.toString() !== req.usuario._id.toString()  &&
+      !proyecto.colaboradores.some(colaborador => colaborador._id.toString() === req.usuario._id.toString())
+    ) {
       const error = new Error(`No puedes ingresar a este proyecto.!!!`);
       return res.status(401).json({ msg: error.message });
     }
