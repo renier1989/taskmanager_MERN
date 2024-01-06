@@ -11,6 +11,7 @@ import { TareaItem } from "../components/TareaItem"
 import ModalEliminarTarea from "../components/ModalEliminarTarea"
 import Alerta from "../components/Alerta"
 import { Colaborador } from '../components/Colaborador';
+import ModalEliminarColaborador from "../components/ModalEliminarColaborador"
 
 type ProyectoParams = {
   id?: string
@@ -94,6 +95,7 @@ export const Proyecto = () => {
 
         <ModalFormularioTarea />
         <ModalEliminarTarea />
+        <ModalEliminarColaborador />
       </>
     )
     :

@@ -6,6 +6,7 @@ import AxiosClient from '../config/AxiosClient';
 import { useNavigate } from 'react-router-dom';
 import { TTarea } from '../interfaces/TareaType';
 import { TColaborador } from '../interfaces/ColaboradorType';
+import { Colaborador } from '../components/Colaborador';
 
 const ProyectosContext = createContext<IProyectosContext>({} as IProyectosContext);
 const ProyectosProvider = ({ children }: IProyectosProvider) => {
@@ -19,6 +20,8 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
     const [modalEliminarTarea, setModalEliminarTarea] = useState<boolean>(false)
     const [colaborador, setColaborador] = useState<TColaborador>({} as TColaborador)
     const [tarea, setTarea] = useState<TTarea>({} as TTarea)
+    const [modalEliminarColaborador, setModalEliminarColaborador] = useState<boolean>(false)
+
     const navigate = useNavigate()
 
     // para llamar los poryectos que el usuario logeado ha creado.
@@ -111,7 +114,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             // al hacerl el map a los proyectos lo que hago es retornar un nuevo arreglo pero sustitulo el editado 
             const proyectosActualizado = proyectos.map(proyectoState => proyectoState._id === data._id ? data : proyectoState);
             setProyectos(proyectosActualizado);
-
+            
             // muestro una alerta del pryecto crado
             setAlerta({
                 msg: 'Proyecto actualizado correctamente.!',
@@ -135,6 +138,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         // console.log(id);
         setCargando(true)
         setAlerta({} as IAlertData)
+        setColaborador({} as TColaborador)
         try {
             const tokenLS = localStorage.getItem('token');
             if (!tokenLS) {
@@ -345,6 +349,17 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         }
     }
 
+    const handleModalEliminarColaborador = (colaborador: TColaborador) =>{
+        setModalEliminarColaborador(!modalEliminarColaborador)
+        setColaborador(colaborador)
+        
+    }
+
+    const eliminarColaborador = ()=>{
+        console.log(colaborador);
+        
+    }
+
     return (
         <ProyectosContext.Provider value={{
             proyectos,
@@ -366,7 +381,10 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             submitColaborador,
             colaborador,
             cargandoColaborador,
-            agregarColaborador
+            agregarColaborador,
+            handleModalEliminarColaborador,
+            modalEliminarColaborador,
+            eliminarColaborador
         }}>
             {children}
         </ProyectosContext.Provider>

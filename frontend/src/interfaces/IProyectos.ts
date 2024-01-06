@@ -36,6 +36,9 @@ export interface IProyectosContext {
   colaborador: TColaborador;
   cargandoColaborador: boolean;
   agregarColaborador : (email:{email:string})=>void;
+  handleModalEliminarColaborador: (colaborador: TColaborador)=>void;
+  modalEliminarColaborador: boolean;
+  eliminarColaborador : ()=>void;
   
 
   // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
