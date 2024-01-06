@@ -154,9 +154,13 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             setProyecto(data.proyecto);
 
         } catch (error) {
+            navigate('/proyectos')
             setAlerta(
                 { msg: error.response.data.msg, error: true }
             )
+            setTimeout(() => {
+                setAlerta({} as IAlertData)
+            }, 3000);
         } finally {
             setCargando(false)
         }
