@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import Proyecto from "../models/Proyecto";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { isValidId } from "../helpers/validId";
 import Usuario from "../models/Usuario";
+
 
 interface ExpressReqRes {
   (req: Request | any, res: Response): void;
@@ -189,7 +190,28 @@ const agregarColaborador: ExpressReqRes = async (req, res) => {
   
 };
 
-const eliminarColaborador: ExpressReqRes = async (req, res) => {};
+const eliminarColaborador: ExpressReqRes = async (req, res) => {
+
+  const proyecto = await Proyecto.findById(req.params.id);
+  // valido que el proyecto existe
+  if(!proyecto) {
+    const error = new Error('Proyecto no encontrado!');
+    return res.status(404).json({ msg: error.message });
+  }
+  
+  // valido solo pueda registrar colaboradores la persona que creo el proyecto
+  if(proyecto.creador.toString() !== req.usuario._id.toString()){
+    const error = new Error('Acción no Permitida!');
+    return res.status(404).json({ msg: error.message });
+  }
+
+  const idColaborador = new Types.ObjectId(req.body.id);
+  proyecto.colaboradores = proyecto.colaboradores.filter(id=> !id.equals(idColaborador))
+  
+  await proyecto.save();
+  res.json({msg: "Colaborador fue Eliminado con exito!"});
+
+};
 
 export {
   obtenerProyectos,

@@ -114,7 +114,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             // al hacerl el map a los proyectos lo que hago es retornar un nuevo arreglo pero sustitulo el editado 
             const proyectosActualizado = proyectos.map(proyectoState => proyectoState._id === data._id ? data : proyectoState);
             setProyectos(proyectosActualizado);
-            
+
             // muestro una alerta del pryecto crado
             setAlerta({
                 msg: 'Proyecto actualizado correctamente.!',
@@ -274,29 +274,35 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
     }
 
     const eliminarTarea = async () => {
-        const token = localStorage.getItem('token');
-        if (!token) return
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
             }
+
+            const { data } = await AxiosClient.delete(`/tareas/${tarea._id}`, config)
+            setAlerta({
+                msg: data.msg,
+                error: false
+            })
+            const proyectoActualizado = { ...proyecto };
+            proyectoActualizado.tareas = proyectoActualizado.tareas.filter(tareaState => tareaState._id !== tarea._id)
+            setProyecto(proyectoActualizado);
+            setModalEliminarTarea(false)
+            setTarea({} as TTarea)
+
+            setTimeout(() => {
+                setAlerta({} as IAlertData)
+            }, 3000);
+
+        } catch (error) {
+            console.log(error);
+
         }
-
-        const { data } = await AxiosClient.delete(`/tareas/${tarea._id}`, config)
-        setAlerta({
-            msg: data.msg,
-            error: false
-        })
-        const proyectoActualizado = { ...proyecto };
-        proyectoActualizado.tareas = proyectoActualizado.tareas.filter(tareaState => tareaState._id !== tarea._id)
-        setProyecto(proyectoActualizado);
-        setModalEliminarTarea(false)
-        setTarea({} as TTarea)
-
-        setTimeout(() => {
-            setAlerta({} as IAlertData)
-        }, 3000);
     }
 
     const submitColaborador = async (email: string) => {
@@ -333,31 +339,61 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
                 }
             }
 
-            const { data } = await AxiosClient.post(`/proyectos/colaboradores/${proyecto._id}`,  email , config)
+            const { data } = await AxiosClient.post(`/proyectos/colaboradores/${proyecto._id}`, email, config)
             setAlerta({
                 msg: data.msg,
-                error:false
+                error: false
             })
             setColaborador({} as TColaborador)
-            setAlerta({} as IAlertData)
         } catch (error) {
             console.log(error.response);
             setAlerta({
                 msg: error.response.data.msg,
-                error:true
+                error: true
             })
         }
     }
 
-    const handleModalEliminarColaborador = (colaborador: TColaborador) =>{
+    const handleModalEliminarColaborador = (colaborador: TColaborador) => {
         setModalEliminarColaborador(!modalEliminarColaborador)
         setColaborador(colaborador)
-        
+
     }
 
-    const eliminarColaborador = ()=>{
-        console.log(colaborador);
-        
+    const eliminarColaborador = async () => {
+        try {
+
+            const token = localStorage.getItem('token');
+            if (!token) return
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const { data } = await AxiosClient.post(`/proyectos/eliminar-colaborador/${proyecto._id}`, { id: colaborador._id }, config)
+
+
+            // actualizo el state del proyecto con los colaboradores 
+            const proyectoActualizado = {...proyecto}
+            proyectoActualizado.colaboradores = proyectoActualizado.colaboradores.filter(colaboradorState => colaboradorState._id !== colaborador._id )
+            setProyecto(proyectoActualizado)
+
+            setAlerta({
+                msg: data.msg,
+                error: false
+            })
+
+           setModalEliminarColaborador(false)
+           setColaborador({} as TColaborador) 
+        } catch (error) {
+            console.log(error);
+
+        }
+
+
+
     }
 
     return (

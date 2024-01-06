@@ -1,6 +1,4 @@
 import mongoose, { Model, Types } from "mongoose";
-import { IUsuario } from "./Usuario";
-import { ITarea } from "./Tarea";
 
 export interface IProyecto{
     _id: Types.ObjectId;
