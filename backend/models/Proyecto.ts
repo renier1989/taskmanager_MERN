@@ -9,7 +9,7 @@ export interface IProyecto{
     fechaEntrega: Date;
     cliente: string;
     creador: Types.ObjectId;
-    colaboradores: IUsuario[];
+    colaboradores: Types.ObjectId[];
     tareas: Types.ObjectId[];
 }
 

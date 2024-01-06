@@ -91,8 +91,8 @@ export const Proyecto = () => {
     :
     (
       <>
-        <h1>Proyecto no encontrado. volver al listdo de proyectos</h1>
-        <Link to='/proyectos'>Volver a proyectos</Link>
+        <Alerta alerta={alerta} />
+        <Link className="flex items-center justify-center text-center font-bold text-sky-600 uppercase" to='/proyectos'>Volver a proyectos</Link>
       </>
     )
 

@@ -134,6 +134,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
     const obtenerProyecto = async (id: string) => {
         // console.log(id);
         setCargando(true)
+        setAlerta({} as IAlertData)
         try {
             const tokenLS = localStorage.getItem('token');
             if (!tokenLS) {
@@ -150,8 +151,9 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             setProyecto(data.proyecto);
 
         } catch (error) {
-            console.log(error);
-            setProyecto({} as IFProyecto)
+            setAlerta(
+                { msg: error.response.data.msg, error: true }
+            )
         } finally {
             setCargando(false)
         }
@@ -305,20 +307,42 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
                 }
             }
 
-            const { data } = await AxiosClient.post(`/proyectos/colaboradores/`,{email}, config)
+            const { data } = await AxiosClient.post(`/proyectos/colaboradores/`, { email }, config)
             setColaborador(data)
             setAlerta({} as IAlertData)
         } catch (error) {
-            setAlerta({msg:error.response.data.msg , error: true});
+            setAlerta({ msg: error.response.data.msg, error: true });
             setColaborador({} as TColaborador)
-        }finally{
+        } finally {
             setCargandoColaborador(false)
         }
     }
 
-    const agregarColaborador = (email:{email:string})=>{
-        console.log(email);
-        
+    const agregarColaborador = async (email: { email: string }) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const { data } = await AxiosClient.post(`/proyectos/colaboradores/${proyecto._id}`,  email , config)
+            setAlerta({
+                msg: data.msg,
+                error:false
+            })
+            setColaborador({} as TColaborador)
+            setAlerta({} as IAlertData)
+        } catch (error) {
+            console.log(error.response);
+            setAlerta({
+                msg: error.response.data.msg,
+                error:true
+            })
+        }
     }
 
     return (

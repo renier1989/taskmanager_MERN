@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import Proyecto from "../models/Proyecto";
 import mongoose from "mongoose";
 import { isValidId } from "../helpers/validId";
-import Tarea from "../models/Tarea";
 import Usuario from "../models/Usuario";
 
 interface ExpressReqRes {
@@ -146,14 +145,49 @@ const buscarColaborador: ExpressReqRes = async (req, res) => {
     const error = new Error(`El Usuario no fue encontrado.!!!`);
     return res.status(404).json({ msg: error.message });
   }
-
-  console.log(usuario);
-  
-
   res.json(usuario);
 };
 
-const agregarColaborador: ExpressReqRes = async (req, res) => {};
+const agregarColaborador: ExpressReqRes = async (req, res) => {
+  const proyecto = await Proyecto.findById(req.params.id);
+  // valido que el proyecto existe
+  if(!proyecto) {
+    const error = new Error('Proyecto no encontrado!');
+    return res.status(404).json({ msg: error.message });
+  }
+  
+  // valido solo pueda registrar colaboradores la persona que creo el proyecto
+  if(proyecto.creador.toString() !== req.usuario._id.toString()){
+    const error = new Error('Acción no Permitida!');
+    return res.status(404).json({ msg: error.message });
+  }
+
+  // valido que el usuario exista y lo busco por el correo que fue ingresado
+  const { email } = req.body;
+  const usuario = await Usuario.findOne({ email }).select('-token -createdAt -updatedAt -password -__v -confirmado');
+
+  if (!usuario) {
+    const error = new Error(`El Usuario no fue encontrado.!!!`);
+    return res.status(404).json({ msg: error.message });
+  }
+
+  // valido que el creador del proyecto no se agregue como colaborador
+  if(proyecto.creador.toString() === usuario._id.toString()){
+    const error = new Error(`El creador del poryecto no puede ser colaborador!`);
+    return res.status(404).json({ msg: error.message });
+  } 
+
+  // valido que el usuario ya no este registrado en el proyecto
+  if(proyecto.colaboradores.includes(usuario._id)){
+    const error = new Error(`El usuario ya es colaborador de este proyecto!`);
+    return res.status(404).json({ msg: error.message });
+  } 
+
+  proyecto.colaboradores.push(usuario._id);
+  await proyecto.save();
+  res.json({msg: "Colaborador fue agregado con exito!"});
+  
+};
 
 const eliminarColaborador: ExpressReqRes = async (req, res) => {};
 
