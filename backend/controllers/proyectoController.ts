@@ -4,18 +4,27 @@ import mongoose, { Types } from "mongoose";
 import { isValidId } from "../helpers/validId";
 import Usuario from "../models/Usuario";
 
-
 interface ExpressReqRes {
   (req: Request | any, res: Response): void;
 }
 
 // OBTENGO LOS PROYECTOS DEL USUARIO AUTENTICADO
 const obtenerProyectos: ExpressReqRes = async (req, res) => {
-  const proyectos = await Proyecto.find()
-    .where("creador")
-    .equals(req.usuario)
-    .select("-tareas");
+  
+  // forma de consultar al modelo de proyectos por los colaboradores o el credor
+  const proyectos = await Proyecto.find({
+    $or: [
+      { colaboradores: { $in: req.usuario } },
+      { creador: { $in: req.usuario } },
+    ],
+  }).select("-tareas");
   res.status(200).json(proyectos);
+
+  // const proyectos = await Proyecto.find()
+  // .where("creador")
+  //   .equals(req.usuario)
+  //   .select("-tareas");
+  // res.status(200).json(proyectos);
 };
 
 // CREO NUEVOS PROYECRO PARA EL USUARIO AUTENTICADO
@@ -41,7 +50,9 @@ const obtenerProyecto: ExpressReqRes = async (req, res) => {
       return res.status(404).json({ msg: error.message });
     }
 
-    const proyecto = await Proyecto.findById(id).populate("tareas").populate('colaboradores', 'nombre email');
+    const proyecto = await Proyecto.findById(id)
+      .populate("tareas")
+      .populate("colaboradores", "nombre email");
     if (!proyecto) {
       const error = new Error(`El proyecto que estas buscando no Existe.!!!`);
       return res.status(404).json({ msg: error.message });
@@ -140,7 +151,9 @@ const eliminarProyecto: ExpressReqRes = async (req, res) => {
 
 const buscarColaborador: ExpressReqRes = async (req, res) => {
   const { email } = req.body;
-  const usuario = await Usuario.findOne({ email }).select('-token -createdAt -updatedAt -password -__v -confirmado');
+  const usuario = await Usuario.findOne({ email }).select(
+    "-token -createdAt -updatedAt -password -__v -confirmado"
+  );
 
   if (!usuario) {
     const error = new Error(`El Usuario no fue encontrado.!!!`);
@@ -152,20 +165,22 @@ const buscarColaborador: ExpressReqRes = async (req, res) => {
 const agregarColaborador: ExpressReqRes = async (req, res) => {
   const proyecto = await Proyecto.findById(req.params.id);
   // valido que el proyecto existe
-  if(!proyecto) {
-    const error = new Error('Proyecto no encontrado!');
+  if (!proyecto) {
+    const error = new Error("Proyecto no encontrado!");
     return res.status(404).json({ msg: error.message });
   }
-  
+
   // valido solo pueda registrar colaboradores la persona que creo el proyecto
-  if(proyecto.creador.toString() !== req.usuario._id.toString()){
-    const error = new Error('Acción no Permitida!');
+  if (proyecto.creador.toString() !== req.usuario._id.toString()) {
+    const error = new Error("Acción no Permitida!");
     return res.status(404).json({ msg: error.message });
   }
 
   // valido que el usuario exista y lo busco por el correo que fue ingresado
   const { email } = req.body;
-  const usuario = await Usuario.findOne({ email }).select('-token -createdAt -updatedAt -password -__v -confirmado');
+  const usuario = await Usuario.findOne({ email }).select(
+    "-token -createdAt -updatedAt -password -__v -confirmado"
+  );
 
   if (!usuario) {
     const error = new Error(`El Usuario no fue encontrado.!!!`);
@@ -173,44 +188,45 @@ const agregarColaborador: ExpressReqRes = async (req, res) => {
   }
 
   // valido que el creador del proyecto no se agregue como colaborador
-  if(proyecto.creador.toString() === usuario._id.toString()){
-    const error = new Error(`El creador del poryecto no puede ser colaborador!`);
+  if (proyecto.creador.toString() === usuario._id.toString()) {
+    const error = new Error(
+      `El creador del poryecto no puede ser colaborador!`
+    );
     return res.status(404).json({ msg: error.message });
-  } 
+  }
 
   // valido que el usuario ya no este registrado en el proyecto
-  if(proyecto.colaboradores.includes(usuario._id)){
+  if (proyecto.colaboradores.includes(usuario._id)) {
     const error = new Error(`El usuario ya es colaborador de este proyecto!`);
     return res.status(404).json({ msg: error.message });
-  } 
+  }
 
   proyecto.colaboradores.push(usuario._id);
   await proyecto.save();
-  res.json({msg: "Colaborador fue agregado con exito!"});
-  
+  res.json({ msg: "Colaborador fue agregado con exito!" });
 };
 
 const eliminarColaborador: ExpressReqRes = async (req, res) => {
-
   const proyecto = await Proyecto.findById(req.params.id);
   // valido que el proyecto existe
-  if(!proyecto) {
-    const error = new Error('Proyecto no encontrado!');
+  if (!proyecto) {
+    const error = new Error("Proyecto no encontrado!");
     return res.status(404).json({ msg: error.message });
   }
-  
+
   // valido solo pueda registrar colaboradores la persona que creo el proyecto
-  if(proyecto.creador.toString() !== req.usuario._id.toString()){
-    const error = new Error('Acción no Permitida!');
+  if (proyecto.creador.toString() !== req.usuario._id.toString()) {
+    const error = new Error("Acción no Permitida!");
     return res.status(404).json({ msg: error.message });
   }
 
   const idColaborador = new Types.ObjectId(req.body.id);
-  proyecto.colaboradores = proyecto.colaboradores.filter(id=> !id.equals(idColaborador))
-  
-  await proyecto.save();
-  res.json({msg: "Colaborador fue Eliminado con exito!"});
+  proyecto.colaboradores = proyecto.colaboradores.filter(
+    (id) => !id.equals(idColaborador)
+  );
 
+  await proyecto.save();
+  res.json({ msg: "Colaborador fue Eliminado con exito!" });
 };
 
 export {
