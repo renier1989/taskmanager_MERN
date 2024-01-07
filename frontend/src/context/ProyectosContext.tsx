@@ -20,7 +20,8 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
     const [colaborador, setColaborador] = useState<TColaborador>({} as TColaborador)
     const [tarea, setTarea] = useState<TTarea>({} as TTarea)
     const [modalEliminarColaborador, setModalEliminarColaborador] = useState<boolean>(false)
-
+    const [buscador, setBuscador] = useState<boolean>(false)
+    
     const navigate = useNavigate()
 
     // para llamar los poryectos que el usuario logeado ha creado.
@@ -426,6 +427,10 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
     }
 
+    const handleBuscador = ()=>{
+        setBuscador(!buscador)
+    }
+
     return (
         <ProyectosContext.Provider value={{
             proyectos,
@@ -451,7 +456,9 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             handleModalEliminarColaborador,
             modalEliminarColaborador,
             eliminarColaborador,
-            completarTarea
+            completarTarea,
+            buscador,
+            handleBuscador
         }}>
             {children}
         </ProyectosContext.Provider>

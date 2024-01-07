@@ -39,7 +39,8 @@ export interface IProyectosContext {
   modalEliminarColaborador: boolean;
   eliminarColaborador : ()=>void;
   completarTarea : (id:string)=>void
-  
+  buscador: boolean;
+  handleBuscador: ()=>void;
 
   // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
 }
