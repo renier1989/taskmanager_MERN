@@ -17,15 +17,7 @@ export const EditarProyecto = () => {
     const admin = useAdmin()
     const navigate = useNavigate()
 
-    if (!admin) {
-
-        mostrarAlerta({
-            msg: 'Acceso no autorizado',
-            error: true
-        })
-
-        navigate('/proyectos');
-    }
+    
 
     useEffect(() => {
         const getProyecto = () => {
@@ -39,6 +31,13 @@ export const EditarProyecto = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.id])
 
+    if (!admin) {
+        mostrarAlerta({
+            msg: 'Acceso no autorizado',
+            error: true
+        })
+        navigate('/proyectos');
+    }
 
     const { nombre, _id } = proyecto
 
@@ -47,8 +46,8 @@ export const EditarProyecto = () => {
     return (
         admin ?
             <>
-                <div className="flex justify-between">
-                    <h1 className="text-4xl font-black">Editar Proyecto : {nombre}</h1>
+                <div className="flex flex-col md:flex-row  justify-between items-center">
+                    <h1 className=" mb-5 md:mb-0 text-4xl font-black">Editar Proyecto : {nombre}</h1>
 
                     <ButtonEliminarProyecto id={_id} />
                 </div>

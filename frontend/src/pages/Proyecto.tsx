@@ -46,12 +46,12 @@ export const Proyecto = () => {
 
   return  (
     <>
-      <div className="flex justify-between">
+      <div className="flex flex-col md:flex-row justify-between">
         <h1 className="text-4xl font-black"> {nombre}</h1>
 
         {admin && (
-          <div className="flex gap-2">
-            <div className="self-center p-2 rounded-md bg-sky-600 text-white cursor-pointer font-semibold transition-all duration-300 hover:shadow-lg">
+          <div className="flex flex-col md:flex-row gap-2 mt-4 md:mt-0">
+            <div className="md:self-center p-2 rounded-md bg-sky-600 text-white cursor-pointer font-semibold transition-all duration-300 hover:shadow-lg">
               <Link className="flex items-center gap-2" to={`/proyectos/editar/${params.id}`}>
                 <EditarIcon />
                 Editar

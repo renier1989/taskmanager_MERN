@@ -15,7 +15,7 @@ export const ButtonEliminarProyecto = ({ id }: ButtonEliminarProyectoProps) => {
 
     return (
         <>
-            <div className="self-center p-2 rounded-md bg-red-600 text-white cursor-pointer font-semibold transition-all duration-300 hover:shadow-lg">
+            <div className="md:self-center p-2 rounded-md bg-red-600 text-white cursor-pointer font-semibold transition-all duration-300 hover:shadow-lg">
                 <button
                     onClick={handleClick}
                     type="button" className="flex gap-2">
