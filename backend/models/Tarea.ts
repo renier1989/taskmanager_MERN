@@ -8,6 +8,7 @@ export interface ITarea {
   fechaEntrega: Date;
   prioridad: string;
   proyecto: IProyecto;
+  completado: Types.ObjectId;
 }
 
 type TareaModel = Model<ITarea>;
@@ -41,6 +42,10 @@ const tareaSchema = new mongoose.Schema<ITarea, TareaModel>(
     proyecto: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Proyecto",
+    },
+    completado: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Usuario",
     },
   },
   {

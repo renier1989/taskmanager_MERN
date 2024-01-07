@@ -11,14 +11,15 @@ export const TareaItem = ({ tarea }: TareaItemProps) => {
     const { handleModalEtidarTarea, handleModalEliminarTarea, completarTarea } = useProyecto()
     const { nombre, descripcion, fechaEntrega, prioridad, estado, _id } = tarea
     const admin = useAdmin()
-
+    
     return (
         <div className="border-b p-5 flex justify-between items-center">
-            <div>
+            <div className="flex flex-col items-start">
                 <p className="mb-1 text-xl font-bold">{nombre} </p>
                 <p className="mb-1 text-sm uppercase text-gray-500">{descripcion} </p>
                 <p className="mb-1 text-xl font-semibold">{formatearFecha(fechaEntrega)} </p>
                 <p className="mb-1 text-gray-600"> Prioridad : {prioridad} </p>
+                {estado && <p className="text-xs font-semibold bg-green-600 text-white p-1 rounded-md">Completado por: <span className="text-sm">{tarea.completado.nombre}</span> </p> }
             </div>
             <div className="flex gap-1">
 

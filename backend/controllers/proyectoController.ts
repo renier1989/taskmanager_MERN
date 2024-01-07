@@ -10,7 +10,6 @@ interface ExpressReqRes {
 
 // OBTENGO LOS PROYECTOS DEL USUARIO AUTENTICADO
 const obtenerProyectos: ExpressReqRes = async (req, res) => {
-  
   // forma de consultar al modelo de proyectos por los colaboradores o el credor
   const proyectos = await Proyecto.find({
     $or: [
@@ -51,7 +50,11 @@ const obtenerProyecto: ExpressReqRes = async (req, res) => {
     }
 
     const proyecto = await Proyecto.findById(id)
-      .populate("tareas")
+      .populate({
+        path: "tareas",
+        populate: { path: "completado", select: "nombre" },
+      })
+      // .populate("tareas")
       .populate("colaboradores", "nombre email");
     if (!proyecto) {
       const error = new Error(`El proyecto que estas buscando no Existe.!!!`);
@@ -61,8 +64,12 @@ const obtenerProyecto: ExpressReqRes = async (req, res) => {
     // validacion para mostrar el proyecto. al usuario
     // si no es el creador y si el usuario no esta en la lista de los colaboradores del proyecto
     // entonces muestro la alerta que no puedo ingresar al proyecto
-    if (proyecto.creador?.toString() !== req.usuario._id.toString()  &&
-      !proyecto.colaboradores.some(colaborador => colaborador._id.toString() === req.usuario._id.toString())
+    if (
+      proyecto.creador?.toString() !== req.usuario._id.toString() &&
+      !proyecto.colaboradores.some(
+        (colaborador) =>
+          colaborador._id.toString() === req.usuario._id.toString()
+      )
     ) {
       const error = new Error(`No puedes ingresar a este proyecto.!!!`);
       return res.status(401).json({ msg: error.message });

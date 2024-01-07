@@ -1,10 +1,8 @@
 import { Request, Response } from "express";
 import Tarea from "../models/Tarea";
 import Proyecto from "../models/Proyecto";
-import mongoose, { Types } from "mongoose";
 import { isValidId } from "../helpers/validId";
-import { ITarea } from "../models/Tarea";
-import bcrypt from "bcrypt";
+import { Types } from "mongoose";
 
 interface ExpressReqRes {
   (req: Request | any, res: Response): void;
@@ -108,7 +106,7 @@ const eliminarTarea: ExpressReqRes = async (req, res) => {
     // consulto el proyecto para acceder a las tareas
     const proyecto = await Proyecto.findById(tarea?.proyecto);
     // ESTO SE HACE ASI DEBIDO AL TIPADO DE TYPESCRIPT
-    // UNA ALTERNATIVA SIN TYPESCRIPT SERIA 
+    // UNA ALTERNATIVA SIN TYPESCRIPT SERIA
     // // proyecto.tareas.pull(tarea._id)
     const idTarea = new Types.ObjectId(tarea?._id);
     if (proyecto) {
@@ -152,9 +150,19 @@ const cambiarEstadoTarea: ExpressReqRes = async (req, res) => {
 
     if (tarea) {
       tarea.estado = !tarea.estado;
+      tarea.completado = req.usuario._id;
     }
     await tarea?.save();
-    res.status(200).json(tarea);
+
+    // despues de guardar la tarea con su nuevo estado y registrar quien la competo
+    // consulto nuevamente la tarea para enviar la informacion con el populate de la info de quien completo la tarea
+    const tareaAlmacenada = await Tarea.findById(id)
+      .populate("proyecto")
+      .populate("completado");
+    console.log(tareaAlmacenada);
+    
+
+    res.status(200).json(tareaAlmacenada);
   } catch (error) {
     console.log(error);
   }

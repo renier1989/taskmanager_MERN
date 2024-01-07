@@ -6,4 +6,5 @@ export type TTarea = {
     fechaEntrega: string;
     prioridad:string;
     proyecto:string;
+    completado:{nombre:string};
 }
