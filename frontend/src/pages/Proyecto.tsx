@@ -57,10 +57,16 @@ export const Proyecto = () => {
         deleteTareasProyectos(tareaEliminada)
       }
     })
-    // cuando se elimina una tarea
+    // cuando se edita una tarea
     socket.on('tarea-editada', (tareaEditada:TTarea)=>{
       if((tareaEditada.proyecto as IFProyecto)._id === proyecto._id){
         editarTareasProyectos(tareaEditada)
+      }
+    })
+    // cuando se completa una tarea
+    socket.on('tarea-completada', (tareaCompleta:TTarea)=>{
+      if((tareaCompleta.proyecto as IFProyecto)._id === proyecto._id){
+        editarTareasProyectos(tareaCompleta)
       }
     })
   })

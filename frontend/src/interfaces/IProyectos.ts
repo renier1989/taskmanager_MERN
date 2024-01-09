@@ -45,6 +45,7 @@ export interface IProyectosContext {
   submitTareasProyectos: (tarea:TTarea)=>void;
   deleteTareasProyectos: (tarea:TTarea)=>void;
   editarTareasProyectos: (tarea:TTarea)=>void;
+  completarTareasProyectos: (tarea:TTarea)=>void;
 
   // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
 }

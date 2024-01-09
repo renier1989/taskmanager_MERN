@@ -76,10 +76,14 @@ io.on('connection', (socket)=>{
     
     socket.on('editar-tarea', (tarea)=>{
         const proyecto = tarea.proyecto._id;
-        console.log(proyecto);
-        
         // emito el evento solo a los usuarios que esten en el canal
         socket.to(proyecto).emit('tarea-editada',tarea);
+    })
+
+    socket.on('completar-tarea', (tarea)=>{
+        const proyecto = tarea.proyecto._id;
+        // emito el evento solo a los usuarios que esten en el canal
+        socket.to(proyecto).emit('tarea-completada',tarea);
     })
 
     

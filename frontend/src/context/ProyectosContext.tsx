@@ -423,9 +423,8 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
             const { data } = await AxiosClient.post(`tareas/estado/${id}`, {}, config);
 
-            const proyectoActualizado = { ...proyecto }
-            proyectoActualizado.tareas = proyectoActualizado.tareas.map(tareaState => tareaState._id === data._id ? data : tareaState)
-            setProyecto(proyectoActualizado)
+            // SOCKET.IO
+            socket.emit('completar-tarea',data);
 
             setTarea({} as TTarea)
             setAlerta({} as IAlertData)
@@ -462,6 +461,12 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         setProyecto(proyectoActualizado)
     }
 
+    const completarTareasProyectos = (tarea:TTarea) =>{
+        const proyectoActualizado = { ...proyecto }
+            proyectoActualizado.tareas = proyectoActualizado.tareas.map(tareaState => tareaState._id === tarea._id ? tarea : tareaState)
+            setProyecto(proyectoActualizado)
+    }
+
     return (
         <ProyectosContext.Provider value={{
             proyectos,
@@ -494,6 +499,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             submitTareasProyectos,
             deleteTareasProyectos,
             editarTareasProyectos,
+            completarTareasProyectos,
         }}>
             {children}
         </ProyectosContext.Provider>
