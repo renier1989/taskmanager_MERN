@@ -11,7 +11,10 @@ function Proyectos() {
 
   useEffect(() => {
     // esto es para poder abrir una conexion on el servidor de socket.io
-    socket = io(import.meta.env.VITE_BACKEND_URL)
+    socket = io(import.meta.env.VITE_BACKEND_URL);
+    // EL PRIMER PARAMETRO SE EL NOMBRE DEL EVENTO
+    // EL SEGUNDO PARAMETRO SON LOS PARAMETROS O VARIABLES QUE SE ENVIAR AL SERVER
+    socket.emit('prueba','Renier Vargas ');
   }, [])
   
 
