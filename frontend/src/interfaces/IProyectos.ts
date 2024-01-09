@@ -41,8 +41,10 @@ export interface IProyectosContext {
   completarTarea : (id:string)=>void
   buscador: boolean;
   handleBuscador: ()=>void;
+  // socket.io functions
   submitTareasProyectos: (tarea:TTarea)=>void;
   deleteTareasProyectos: (tarea:TTarea)=>void;
+  editarTareasProyectos: (tarea:TTarea)=>void;
 
   // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
 }
@@ -50,3 +52,4 @@ export interface IProyectosContext {
 export interface IProyectosProvider {
   children: JSX.Element | JSX.Element[];
 }
+

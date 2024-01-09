@@ -6,9 +6,9 @@ import AxiosClient from '../config/AxiosClient';
 import { useNavigate } from 'react-router-dom';
 import { TTarea } from '../interfaces/TareaType';
 import { TColaborador } from '../interfaces/ColaboradorType';
-import io from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-let socket;
+let socket:Socket;
 
 const ProyectosContext = createContext<IProyectosContext>({} as IProyectosContext);
 const ProyectosProvider = ({ children }: IProyectosProvider) => {
@@ -263,9 +263,8 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
 
             const { data } = await AxiosClient.put(`/tareas/${tarea._id}`, tarea, config)
 
-            const proyectoActualizado = { ...proyecto };
-            proyectoActualizado.tareas = proyectoActualizado.tareas.map(tareaState => tareaState._id === data._id ? data : tareaState);
-            setProyecto(proyectoActualizado)
+            // SOCKET.IO
+            socket.emit('editar-tarea',data);
 
             setAlerta({} as IAlertData)
             setModalFormularioTarea(false)
@@ -457,6 +456,12 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             setProyecto(proyectoActualizado);
     }
 
+    const editarTareasProyectos = (tareaEdit:TTarea)=>{
+        const proyectoActualizado = { ...proyecto };
+        proyectoActualizado.tareas = proyectoActualizado.tareas.map(tareaState => tareaState._id === tareaEdit._id ? tareaEdit : tareaState);
+        setProyecto(proyectoActualizado)
+    }
+
     return (
         <ProyectosContext.Provider value={{
             proyectos,
@@ -488,6 +493,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             // socket.io
             submitTareasProyectos,
             deleteTareasProyectos,
+            editarTareasProyectos,
         }}>
             {children}
         </ProyectosContext.Provider>

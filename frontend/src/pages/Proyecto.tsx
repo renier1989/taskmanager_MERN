@@ -12,16 +12,18 @@ import ModalEliminarTarea from "../components/ModalEliminarTarea"
 import { Colaborador } from '../components/Colaborador';
 import ModalEliminarColaborador from "../components/ModalEliminarColaborador"
 import useAdmin from "../hooks/useAdmin"
-import io from "socket.io-client"
+import io, { Socket } from "socket.io-client"
 import { TTarea } from "../interfaces/TareaType"
-let socket;
+import { IFProyecto } from "../interfaces/IProyectos"
+let socket:Socket;
+
 type ProyectoParams = {
   id?: string
 }
-
 export const Proyecto = () => {
+
   const params = useParams<ProyectoParams>()
-  const { obtenerProyecto, proyecto, cargando, handleModalTarea,submitTareasProyectos,deleteTareasProyectos } = useProyecto()
+  const { obtenerProyecto, proyecto, cargando, handleModalTarea,submitTareasProyectos,deleteTareasProyectos,editarTareasProyectos } = useProyecto()
   const admin = useAdmin()
 
   useEffect(() => {
@@ -55,8 +57,12 @@ export const Proyecto = () => {
         deleteTareasProyectos(tareaEliminada)
       }
     })
-
-
+    // cuando se elimina una tarea
+    socket.on('tarea-editada', (tareaEditada:TTarea)=>{
+      if((tareaEditada.proyecto as IFProyecto)._id === proyecto._id){
+        editarTareasProyectos(tareaEditada)
+      }
+    })
   })
   
   

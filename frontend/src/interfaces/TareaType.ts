@@ -1,3 +1,5 @@
+import { IFProyecto } from "./IProyectos";
+
 export type TTarea = {
     _id: string;
     nombre: string
@@ -5,6 +7,6 @@ export type TTarea = {
     estado?:string;
     fechaEntrega: string;
     prioridad:string;
-    proyecto:string;
+    proyecto:string | IFProyecto;
     completado:{nombre:string};
 }

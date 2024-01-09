@@ -73,6 +73,16 @@ io.on('connection', (socket)=>{
         // emito el evento solo a los usuarios que esten en el canal
         socket.to(proyecto).emit('tarea-eliminada',tarea);
     })
+    
+    socket.on('editar-tarea', (tarea)=>{
+        const proyecto = tarea.proyecto._id;
+        console.log(proyecto);
+        
+        // emito el evento solo a los usuarios que esten en el canal
+        socket.to(proyecto).emit('tarea-editada',tarea);
+    })
+
+    
 
     // aqui es donde se definen los eventos de socket.io
     // socket.on('prueba',(nombre)=>{
