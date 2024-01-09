@@ -9,18 +9,18 @@ import { PlusIcon } from "../components/icons/PlusIcon"
 import ModalFormularioTarea from "../components/ModalFormularioTarea"
 import { TareaItem } from "../components/TareaItem"
 import ModalEliminarTarea from "../components/ModalEliminarTarea"
-import Alerta from "../components/Alerta"
 import { Colaborador } from '../components/Colaborador';
 import ModalEliminarColaborador from "../components/ModalEliminarColaborador"
 import useAdmin from "../hooks/useAdmin"
-
+import io from "socket.io-client"
+let socket;
 type ProyectoParams = {
   id?: string
 }
 
 export const Proyecto = () => {
   const params = useParams<ProyectoParams>()
-  const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta } = useProyecto()
+  const { obtenerProyecto, proyecto, cargando, handleModalTarea } = useProyecto()
   const admin = useAdmin()
 
   useEffect(() => {
@@ -34,8 +34,24 @@ export const Proyecto = () => {
     getProyecto()
   }, [params.id])
 
+  // este primer useEffect es unicamente para crear la conexion la primera vez que se visita el poryecto y pasamas el id
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL);
+    socket.emit('abrir-proyecto', params.id);
+  }, [])
+
+  // este useEffect no tendra dependencias para que este en escucha constante de eventos de socket.io
+  useEffect(() => {
+    // socket.on('respuesta', (persona)=>{
+    //   console.log({persona});
+    // })
+  })
+  
+  
+
+
   const { nombre, _id } = proyecto
-  const { msg } = alerta
+  
 
   if (cargando) return (
     <>

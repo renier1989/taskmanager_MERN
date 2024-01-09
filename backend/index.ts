@@ -53,6 +53,17 @@ const io = new Server(servidor, {
 
 io.on('connection', (socket)=>{
     console.log("Conectado con el servidor de socket.io");
+
+    socket.on('abrir-proyecto',(proyecto_id)=>{
+        console.log('Se abrio el proyecto:',proyecto_id);
+        // el join crear como una sala, es como un identificador para notificar solo a las personas que tengas ese id de sala
+        socket.join(proyecto_id)
+        // socket.to(proyecto_id).emit('respuesta', { nombre: 'Hola como va tu dia?' })
+        
+    })
+
+
+
     // aqui es donde se definen los eventos de socket.io
     // socket.on('prueba',(nombre)=>{
     //     console.log('SE EJECUTO LA PRUBA DESDE EL FORNT', nombre);
