@@ -111,7 +111,7 @@ const eliminarTarea: ExpressReqRes = async (req, res) => {
     const idTarea = new Types.ObjectId(tarea?._id);
     if (proyecto) {
       proyecto.tareas = proyecto?.tareas.filter((tareaState) =>
-        tareaState._id.equals(idTarea)
+        !tareaState._id.equals(idTarea)
       );
     }
 

@@ -13,6 +13,7 @@ import { Colaborador } from '../components/Colaborador';
 import ModalEliminarColaborador from "../components/ModalEliminarColaborador"
 import useAdmin from "../hooks/useAdmin"
 import io from "socket.io-client"
+import { TTarea } from "../interfaces/TareaType"
 let socket;
 type ProyectoParams = {
   id?: string
@@ -20,7 +21,7 @@ type ProyectoParams = {
 
 export const Proyecto = () => {
   const params = useParams<ProyectoParams>()
-  const { obtenerProyecto, proyecto, cargando, handleModalTarea } = useProyecto()
+  const { obtenerProyecto, proyecto, cargando, handleModalTarea,submitTareasProyectos } = useProyecto()
   const admin = useAdmin()
 
   useEffect(() => {
@@ -42,9 +43,12 @@ export const Proyecto = () => {
 
   // este useEffect no tendra dependencias para que este en escucha constante de eventos de socket.io
   useEffect(() => {
-    // socket.on('respuesta', (persona)=>{
-    //   console.log({persona});
-    // })
+    // cada vez que se agregar una nueva tarea, la envio al provider para que la actualize en la funcion
+    socket.on('tarea-agregada', (tareaNueva:TTarea)=>{
+      if(tareaNueva.proyecto === proyecto._id){
+        submitTareasProyectos(tareaNueva)
+      }
+    })
   })
   
   

@@ -6,6 +6,9 @@ import AxiosClient from '../config/AxiosClient';
 import { useNavigate } from 'react-router-dom';
 import { TTarea } from '../interfaces/TareaType';
 import { TColaborador } from '../interfaces/ColaboradorType';
+import io from "socket.io-client";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+let socket;
 
 const ProyectosContext = createContext<IProyectosContext>({} as IProyectosContext);
 const ProyectosProvider = ({ children }: IProyectosProvider) => {
@@ -23,6 +26,12 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
     const [buscador, setBuscador] = useState<boolean>(false)
     
     const navigate = useNavigate()
+
+    // ESTO ES SOLO PARA ESTABLECER LA CONEXION CON SOKCET.IO LA SE EJECUTA UNA VEZ
+    useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL);
+    }, [])
+    
 
     // para llamar los poryectos que el usuario logeado ha creado.
     useEffect(() => {
@@ -226,12 +235,13 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             }
 
             const { data } = await AxiosClient.post('/tareas', tarea, config)
-            // creo una nueva const con el proyecto actual para poder cargarle las tareas
-            const proyectoActualizado = { ...proyecto }
-            proyectoActualizado.tareas = [...proyecto.tareas, data]
-            // cargo al state de proyecto , el proyectoActualizado con las tareas
-            setProyecto(proyectoActualizado)
+
             setModalFormularioTarea(false)
+
+
+            // SOKCET.IO
+            // paso los datos de la tarea agregada data
+            socket.emit('nueva-tarea', data);
 
         } catch (error) {
             console.log(error);
@@ -431,6 +441,15 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         setBuscador(!buscador)
     }
 
+    // SOCKET.IO
+    const submitTareasProyectos = (tarea:TTarea) =>{
+            // creo una nueva const con el proyecto actual para poder cargarle las tareas
+            const proyectoActualizado = { ...proyecto }
+            proyectoActualizado.tareas = [...proyectoActualizado.tareas, tarea]
+            // cargo al state de proyecto , el proyectoActualizado con las tareas
+            setProyecto(proyectoActualizado)
+    }
+
     return (
         <ProyectosContext.Provider value={{
             proyectos,
@@ -458,7 +477,9 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             eliminarColaborador,
             completarTarea,
             buscador,
-            handleBuscador
+            handleBuscador,
+            // socket.io
+            submitTareasProyectos
         }}>
             {children}
         </ProyectosContext.Provider>

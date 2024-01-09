@@ -59,10 +59,14 @@ io.on('connection', (socket)=>{
         // el join crear como una sala, es como un identificador para notificar solo a las personas que tengas ese id de sala
         socket.join(proyecto_id)
         // socket.to(proyecto_id).emit('respuesta', { nombre: 'Hola como va tu dia?' })
-        
     })
 
-
+    // escucho cuando ocurra el evento de crear nueva tarea
+    socket.on('nueva-tarea',(tarea)=>{
+        const proyecto = tarea.proyecto;
+        // emito el evento solo a los usuarios que esten en el canal
+        socket.to(proyecto).emit('tarea-agregada',tarea);
+    })
 
     // aqui es donde se definen los eventos de socket.io
     // socket.on('prueba',(nombre)=>{
