@@ -1,9 +1,20 @@
+import { useEffect } from "react";
 import Alerta from "../components/Alerta";
 import { PreviewProyecto } from "../components/PreviewProyecto";
 import useProyecto from "../hooks/useProyectos"
+import io from "socket.io-client"
+
+let socket;
 
 function Proyectos() {
   const { proyectos,alerta } = useProyecto()
+
+  useEffect(() => {
+    // esto es para poder abrir una conexion on el servidor de socket.io
+    socket = io(import.meta.env.VITE_BACKEND_URL)
+  }, [])
+  
+
   return (
     <>
       <h1 className="text-4xl  font-black">Proyectos</h1>

@@ -52,8 +52,8 @@ const io = new Server(servidor, {
 });
 
 io.on('connection', (socket)=>{
-    console.log(socket);
+    console.log("Conectado con el servidor de socket.io");
     // aqui es donde se definen los eventos de socket.io
 
-    
+
 })
