@@ -68,6 +68,12 @@ io.on('connection', (socket)=>{
         socket.to(proyecto).emit('tarea-agregada',tarea);
     })
 
+    socket.on('eliminar-tarea', (tarea)=>{
+        const proyecto = tarea.proyecto;
+        // emito el evento solo a los usuarios que esten en el canal
+        socket.to(proyecto).emit('tarea-eliminada',tarea);
+    })
+
     // aqui es donde se definen los eventos de socket.io
     // socket.on('prueba',(nombre)=>{
     //     console.log('SE EJECUTO LA PRUBA DESDE EL FORNT', nombre);

@@ -21,7 +21,7 @@ type ProyectoParams = {
 
 export const Proyecto = () => {
   const params = useParams<ProyectoParams>()
-  const { obtenerProyecto, proyecto, cargando, handleModalTarea,submitTareasProyectos } = useProyecto()
+  const { obtenerProyecto, proyecto, cargando, handleModalTarea,submitTareasProyectos,deleteTareasProyectos } = useProyecto()
   const admin = useAdmin()
 
   useEffect(() => {
@@ -49,6 +49,14 @@ export const Proyecto = () => {
         submitTareasProyectos(tareaNueva)
       }
     })
+    // cuando se elimina una tarea
+    socket.on('tarea-eliminada', (tareaEliminada:TTarea)=>{
+      if(tareaEliminada.proyecto === proyecto._id){
+        deleteTareasProyectos(tareaEliminada)
+      }
+    })
+
+
   })
   
   

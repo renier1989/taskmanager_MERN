@@ -42,6 +42,7 @@ export interface IProyectosContext {
   buscador: boolean;
   handleBuscador: ()=>void;
   submitTareasProyectos: (tarea:TTarea)=>void;
+  deleteTareasProyectos: (tarea:TTarea)=>void;
 
   // mostrarAlerta: React.Dispatch<React.SetStateAction<IAlertData>>
 }
