@@ -7,12 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import { TTarea } from '../interfaces/TareaType';
 import { TColaborador } from '../interfaces/ColaboradorType';
 import io, { Socket } from "socket.io-client";
+import useAuth from '../hooks/useAuth';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let socket:Socket;
 
 const ProyectosContext = createContext<IProyectosContext>({} as IProyectosContext);
 const ProyectosProvider = ({ children }: IProyectosProvider) => {
-
+    const {auth} = useAuth()
     const [proyectos, setProyectos] = useState<IFProyecto[]>({} as IFProyecto[])
     const [alerta, setAlerta] = useState<IAlertData>({} as IAlertData)
     const [proyecto, setProyecto] = useState<IFProyecto>({} as IFProyecto)
@@ -57,7 +58,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             }
         }
         obtenerProyectos()
-    }, [])
+    }, [auth])
 
     const mostrarAlerta = (alerta: IAlertData) => {
         setAlerta(alerta);
