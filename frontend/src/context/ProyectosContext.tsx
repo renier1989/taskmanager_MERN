@@ -440,6 +440,12 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
         setBuscador(!buscador)
     }
 
+    const cerrarSesionProyectos = ()=>{
+        setProyectos({} as IFProyecto[])
+        setProyecto({} as IFProyecto)
+        setAlerta({} as IAlertData)
+    }
+
     // SOCKET.IO
     const submitTareasProyectos = (tarea:TTarea) =>{
             // creo una nueva const con el proyecto actual para poder cargarle las tareas
@@ -495,6 +501,7 @@ const ProyectosProvider = ({ children }: IProyectosProvider) => {
             completarTarea,
             buscador,
             handleBuscador,
+            cerrarSesionProyectos,
             // socket.io
             submitTareasProyectos,
             deleteTareasProyectos,

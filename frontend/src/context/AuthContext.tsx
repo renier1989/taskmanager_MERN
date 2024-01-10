@@ -1,5 +1,5 @@
 import {  createContext, useEffect, useState } from "react";
-import { authValues } from "../interfaces/AuthType";
+import { TAuth, authValues } from '../interfaces/AuthType';
 import AxiosClient from "../config/AxiosClient";
 import { useNavigate } from "react-router-dom";
 import { IAuthContext, IAuthProvider } from "../interfaces/IAuth";
@@ -10,7 +10,7 @@ const AuthProvider = ({ children }:IAuthProvider) => {
 // const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     const navigate = useNavigate();
-    const [auth, setAuth] = useState(authValues);
+    const [auth, setAuth] = useState<TAuth>(authValues as TAuth);
     const [cargando , setCargando] = useState(true);
 
     useEffect(() => {
@@ -40,10 +40,15 @@ const AuthProvider = ({ children }:IAuthProvider) => {
         autenticarUsuario()
     }, [navigate])
 
+    const cerrarSesionAuth = () => {
+        setAuth(authValues)
+    }
+
     return <AuthContext.Provider value={{
         cargando,
         auth,
-        setAuth
+        setAuth,
+        cerrarSesionAuth,
     }}>
         {children}
     </AuthContext.Provider>

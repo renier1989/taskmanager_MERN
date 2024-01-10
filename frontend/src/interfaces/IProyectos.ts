@@ -41,6 +41,8 @@ export interface IProyectosContext {
   completarTarea : (id:string)=>void
   buscador: boolean;
   handleBuscador: ()=>void;
+  cerrarSesionProyectos: ()=>void;
+
   // socket.io functions
   submitTareasProyectos: (tarea:TTarea)=>void;
   deleteTareasProyectos: (tarea:TTarea)=>void;
